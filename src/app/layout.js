@@ -4,6 +4,14 @@ import { CiCalendar, CiClock2, CiSettings } from 'react-icons/ci';
 import { LiaTasksSolid } from 'react-icons/lia';
 
 import './globals.css';
+import {
+  defaultEvent,
+  defaultSettings,
+  defaultTask,
+  EventsContext,
+  TasksContext,
+  SettingsContext
+} from './constants/context';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -13,24 +21,34 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const [events, setEvents] = useState(defaultEvent);
+  const [tasks, setTasks] = useState(defaultTask);
+  const [settings, setSettings] = useState(defaultSettings);
+
   return (
     <html lang='en'>
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <nav className='bg-blue-500 w-full p-5 text-white drop-shadow-md'>
-          WhenToDo
-        </nav>
-        <div className='flex-grow flex flex-col-reverse sm:flex-row'>
-          <aside
-            className='w-full sm:w-[100px] sm:shadow-md flex flex-row space-x-4 sm:space-x-0 sm:space-y-4
+        <EventsContext.Provider value={{ events, setEvents }}>
+          <TasksContext.Provider value={{ tasks, setTasks }}>
+            <SettingsContext.Provider value={{ settings, setSettings }}>
+              <nav className='bg-blue-500 w-full p-5 text-white drop-shadow-md'>
+                WhenToDo
+              </nav>
+              <div className='flex-grow flex flex-col-reverse sm:flex-row'>
+                <aside
+                  className='w-full sm:w-[100px] sm:shadow-md flex flex-row space-x-4 sm:space-x-0 sm:space-y-4
                             justify-center sm:justify-start sm:flex-col p-2 rounded-lg sm:rounded-none bg-gray-100 sm:bg-white'
-          >
-            <NavButton icon={<CiCalendar size={35} />} text='Events' />
-            <NavButton icon={<LiaTasksSolid size={35} />} text='Tasks' />
-            <NavButton icon={<CiClock2 size={35} />} text='Schedule' />
-            <NavButton icon={<CiSettings size={35} />} text='Settings' />
-          </aside>
-          <main className='flex-grow flex p-4'>{children}</main>
-        </div>
+                >
+                  <NavButton icon={<CiCalendar size={35} />} text='Events' />
+                  <NavButton icon={<LiaTasksSolid size={35} />} text='Tasks' />
+                  <NavButton icon={<CiClock2 size={35} />} text='Schedule' />
+                  <NavButton icon={<CiSettings size={35} />} text='Settings' />
+                </aside>
+                <main className='flex-grow flex p-4'>{children}</main>
+              </div>
+            </SettingsContext.Provider>
+          </TasksContext.Provider>
+        </EventsContext.Provider>
       </body>
     </html>
   );
