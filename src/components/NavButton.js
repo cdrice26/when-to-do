@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 
 /**
  * Renders a button that acts as a navigation link.
@@ -12,10 +13,19 @@ import Link from 'next/link';
 export default function NavButton({ text, page, icon }) {
   return (
     <Link href={page} passHref>
-      <button className='flex flex-col justify-center items-center w-full rounded-lg hover:bg-gray-200 p-4'>
-        {icon}
-        {text}
+      <button
+        className='flex flex-col justify-center items-center flex-grow max-w-[100px] sm:w-full p-2
+                       hover:bg-gray-200 active:bg-gray-300 rounded-lg'
+      >
+        <div className='text-2xl'>{icon}</div>
+        <span className='text-xs md:text-base'>{text}</span>
       </button>
     </Link>
   );
 }
+
+NavButton.propTypes = {
+  text: PropTypes.string.isRequired,
+  page: PropTypes.string.isRequired,
+  icon: PropTypes.node.isRequired
+};
