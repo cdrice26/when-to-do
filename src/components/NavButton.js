@@ -15,10 +15,12 @@ export default function NavButton({ text, page, icon }) {
     <Link href={page} passHref>
       <button
         className='flex flex-col justify-center items-center flex-grow max-w-[100px] sm:w-full p-2
-                       hover:bg-gray-200 active:bg-gray-300 rounded-lg'
+                       hover:bg-blue-600 sm:hover:bg-gray-200 active:bg-blue-700 sm:active:bg-gray-300 rounded-lg'
       >
         <div className='text-2xl'>{icon}</div>
-        <span className='text-xs md:text-base'>{text}</span>
+        <span className='text-xs md:text-base text-white sm:text-current'>
+          {text}
+        </span>
       </button>
     </Link>
   );

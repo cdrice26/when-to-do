@@ -9,6 +9,7 @@ import {
   editElementInState
 } from '../../helper/stateMutation';
 import randId from '../../helper/UUID';
+import AddButton from '../../components/AddButton';
 
 /**
  * Component for availability screen (where you create events)
@@ -74,8 +75,11 @@ const AvailabilityScreen = () => {
             onDestroy={() => deleteEvent(i)}
           />
         ))}
-        <button onClick={addEvent}>Add Event</button>
       </div>
+      <AddButton
+        onClick={addEvent}
+        className='fixed bottom-[100px] right-[15px] sm:bottom-10 sm:right-10'
+      />
     </div>
   );
 };
