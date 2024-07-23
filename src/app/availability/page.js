@@ -49,31 +49,33 @@ const AvailabilityScreen = () => {
   };
 
   return (
-    <div>
+    <div className='flex flex-col w-full'>
       <div>Enter the times this week that you are busy:</div>
-      {events.map((event, i) => (
-        <Event
-          key={i}
-          {...event}
-          onNameChange={(value) => {
-            editEvent(i, 'name', value);
-          }}
-          onStartChange={(value) => {
-            if (value < event.endTime) editEvent(i, 'startTime', value);
-            else editEvent(i, 'startTime', event.endTime);
-          }}
-          onEndChange={(value) => {
-            if (value > event.startTime) editEvent(i, 'endTime', value);
-            else editEvent(i, 'endTime', event.startTime);
-          }}
-          onLocationChange={(value) => {
-            editEvent(i, 'location', value);
-          }}
-          onDayChange={(dayIndex) => toggleDay(i, dayIndex)}
-          onDestroy={() => deleteEvent(i)}
-        />
-      ))}
-      <button onClick={addEvent}>Add Event</button>
+      <div className='flex-grow flex flex-row flex-wrap w-full gap-5'>
+        {events.map((event, i) => (
+          <Event
+            key={i}
+            {...event}
+            onNameChange={(value) => {
+              editEvent(i, 'name', value);
+            }}
+            onStartChange={(value) => {
+              if (value < event.endTime) editEvent(i, 'startTime', value);
+              else editEvent(i, 'startTime', event.endTime);
+            }}
+            onEndChange={(value) => {
+              if (value > event.startTime) editEvent(i, 'endTime', value);
+              else editEvent(i, 'endTime', event.startTime);
+            }}
+            onLocationChange={(value) => {
+              editEvent(i, 'location', value);
+            }}
+            onDayChange={(dayIndex) => toggleDay(i, dayIndex)}
+            onDestroy={() => deleteEvent(i)}
+          />
+        ))}
+        <button onClick={addEvent}>Add Event</button>
+      </div>
     </div>
   );
 };

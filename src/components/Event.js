@@ -70,7 +70,9 @@ const styles = {
     borderRadius: 10,
     marginTop: 10,
     marginBottom: 10,
-    paddingTop: 5
+    paddingTop: 5,
+    flexShrink: 1,
+    height: 350
   },
   timePickers: {
     display: 'flex',
