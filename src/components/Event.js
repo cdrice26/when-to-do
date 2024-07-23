@@ -1,5 +1,7 @@
 import DaySelector from './DaySelector';
-//import TimePicker from './TimePicker';
+import TimePicker from './TimePicker';
+import Button from './Button';
+import React from 'react';
 
 /**
  * One event on the availablility screen, with controls for editing and deleting
@@ -31,16 +33,20 @@ const Event = ({
       </div>
       <DaySelector daysSelected={days} onChange={onDayChange} />
       <div style={styles.timePickers}>
-        {/* <TimePicker
+        <TimePicker
           label='Start: '
           value={startTime}
-          onChange={(_e, selectedTime) => onStartChange(selectedTime)}
+          onChange={(selectedTime) =>
+            onStartChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+          }
         />
         <TimePicker
           label='End: '
           value={endTime}
-          onChange={(_e, selectedTime) => onEndChange(selectedTime)}
-        /> */}
+          onChange={(selectedTime) =>
+            onEndChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+          }
+        />
       </div>
       <div style={styles.timePickers}>
         <div>Location: </div>
@@ -51,7 +57,9 @@ const Event = ({
           onInput={onLocationChange}
         />
       </div>
-      <button onClick={onDestroy}>Delete Event</button>
+      <div className='flex justify-center items-center w-full p-2'>
+        <Button onClick={onDestroy} text='Delete' />
+      </div>
     </div>
   );
 };
@@ -66,7 +74,7 @@ const styles = {
   },
   timePickers: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 5,
