@@ -51,8 +51,10 @@ const AvailabilityScreen = () => {
 
   return (
     <div className='flex flex-col w-full'>
-      <div>Enter the times this week that you are busy:</div>
-      <div className='flex-grow flex flex-row flex-wrap w-full gap-5'>
+      <div className='w-full text-center'>
+        Enter the times this week that you are busy:
+      </div>
+      <div className='flex-grow flex flex-row flex-wrap w-full gap-5 justify-center'>
         {events.map((event, i) => (
           <Event
             key={i}

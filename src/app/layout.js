@@ -60,7 +60,7 @@ export default function RootLayout({ children }) {
                   />
                 }
                 text='Tasks'
-                page='/'
+                page='/tasks'
               />
               <NavButton
                 icon={

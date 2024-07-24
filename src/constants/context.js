@@ -28,7 +28,7 @@ const defaultTask = [
   {
     name: '',
     location: '',
-    time: 0,
+    time: new Date(0, 0, 0, 0, 0),
     scheduled: false,
     outside: false,
     id: randId()

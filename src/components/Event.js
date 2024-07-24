@@ -20,10 +20,6 @@ const Event = ({
   onLocationChange,
   onDestroy
 }) => {
-  React.useEffect(() => {
-    console.log(name, days, startTime, endTime, location);
-  });
-
   return (
     <div style={styles.container}>
       <div style={styles.timePickers}>
@@ -62,7 +58,7 @@ const Event = ({
         />
       </div>
       <div className='flex justify-center items-center w-full p-2'>
-        <Button onClick={onDestroy} text='Delete' />
+        <Button onClick={onDestroy} text='Delete Event' />
       </div>
     </div>
   );

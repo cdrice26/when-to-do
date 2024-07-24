@@ -8,10 +8,6 @@ import './TimePickerStyles.css';
  * @returns
  */
 const TimePicker = (props) => {
-  React.useEffect(() => {
-    console.log(props.value);
-  });
-
   return (
     <div style={styles.timePickerContainer}>
       <span style={styles.timePickerLabel}>{props.label}</span>
