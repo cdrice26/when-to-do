@@ -20,6 +20,10 @@ const Event = ({
   onLocationChange,
   onDestroy
 }) => {
+  React.useEffect(() => {
+    console.log(name, days, startTime, endTime, location);
+  });
+
   return (
     <div style={styles.container}>
       <div style={styles.timePickers}>
@@ -28,7 +32,7 @@ const Event = ({
           style={styles.textInput}
           value={name}
           placeholder='New Event'
-          onInput={onNameChange}
+          onInput={(e) => onNameChange(e.target.value)}
         />
       </div>
       <DaySelector daysSelected={days} onChange={onDayChange} />
@@ -54,7 +58,7 @@ const Event = ({
           style={styles.textInput}
           value={location}
           placeholder='Somewhere'
-          onInput={onLocationChange}
+          onInput={(e) => onLocationChange(e.target.value)}
         />
       </div>
       <div className='flex justify-center items-center w-full p-2'>
