@@ -3,3 +3,5 @@
 const ScheduleScreen = () => {
   return <div>Scheduled</div>;
 };
+
+export default ScheduleScreen;
