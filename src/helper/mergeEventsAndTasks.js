@@ -140,7 +140,7 @@ const mergeEventsAndTasks = async (
  * @param {Array} events - Array of events to sort and merge
  * @returns {Array} - Array of merged events
  */
-const mergeOverlappingEvents = (events) => {
+export const mergeOverlappingEvents = (events) => {
   // Sort events by start time
   events.sort((first, second) => first.startTime - second.startTime);
   events = events.filter((event) => event !== undefined);
@@ -172,8 +172,7 @@ const mergeOverlappingEvents = (events) => {
         endTime: new Date(
           Math.max(lastMergedEvent.endTime, currentEvent.endTime)
         ),
-        location: lastMergedEvent.location || currentEvent.location,
-        days: []
+        location: lastMergedEvent.location || currentEvent.location
       };
 
       // Remove the event that was last added, then replace it with the merged one
@@ -196,7 +195,7 @@ const mergeOverlappingEvents = (events) => {
  * @param {Boolean} isThisWeek - Whether of not we are dealing with this week (otherwise next week)
  * @returns {Array} - List of dates corresponding to each hour
  */
-const buildDateList = (startTime, endTime, day, isThisWeek) => {
+export const buildDateList = (startTime, endTime, day, isThisWeek) => {
   const startHr = startTime.getHours();
   const endHr = endTime.getHours();
   const lastSunday = getLastSunday(Date.now());
@@ -221,7 +220,7 @@ const buildDateList = (startTime, endTime, day, isThisWeek) => {
  * @param {Date} d - The date of which to get the last Sunday
  * @returns {Date} - The date of the last Sunday before {d}
  */
-const getLastSunday = (d) => {
+export const getLastSunday = (d) => {
   const t = new Date(d);
   t.setDate(t.getDate() - t.getDay());
   return t;
