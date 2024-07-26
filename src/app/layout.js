@@ -77,7 +77,7 @@ export default function RootLayout({ children }) {
                   />
                 }
                 text='Settings'
-                page='/'
+                page='/settings'
               />
             </aside>
             <main className='flex-grow p-4 overflow-y-auto bg-white'>
