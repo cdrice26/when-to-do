@@ -9,8 +9,14 @@ import getCoords from './getCoords';
 const getWeather = async (location, times) => {
   const coords = await getCoords(location);
   if (coords === undefined) return 0;
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${coords[1]}&longitude=${coords[0]}&hourly=precipitation_probability`;
-  const resp = await fetch(url);
+  const url = '/api/weather';
+  const resp = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ latitude: coords[0], longitude: coords[1] })
+  });
   const json = await resp.json();
   if (Object.keys(json).includes('error')) return 0;
   const p = json.hourly.time
