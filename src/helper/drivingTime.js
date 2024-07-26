@@ -13,7 +13,6 @@ const getDrivingTime = async (location1, location2) => {
   // Get coordinates
   const coord1 = await getCoords(location1);
   const coord2 = await getCoords(location2);
-  console.log('Coords:', coord1, coord2);
 
   try {
     // If both coordinates actually exist, get driving time between them and return it
@@ -22,8 +21,6 @@ const getDrivingTime = async (location1, location2) => {
       // Check for cached API result from last hour
       const cacheKey = `drivingTime-${location1}-${location2}`;
       const cachedRaw = localStorage.getItem(cacheKey);
-      console.log('Cache Key:', cacheKey);
-      console.log('Cached raw data:', cachedRaw);
       const isCached = cachedRaw !== null && cachedRaw !== undefined;
       if (isCached) {
         const cached = JSON.parse(cachedRaw);
