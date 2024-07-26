@@ -1,4 +1,8 @@
-// babel.config.js
 module.exports = {
-  presets: ['next/babel'] // This includes the necessary presets for Next.js
+  presets: ['next/babel'],
+  env: {
+    test: {
+      presets: ['@babel/preset-env', '@babel/preset-react']
+    }
+  }
 };
