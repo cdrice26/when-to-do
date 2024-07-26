@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
                   <CiClock2 size={35} className='text-white sm:text-current' />
                 }
                 text='Schedule'
-                page='/'
+                page='/schedule'
               />
               <NavButton
                 icon={
