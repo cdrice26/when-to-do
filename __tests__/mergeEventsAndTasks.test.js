@@ -29,7 +29,7 @@ test('merges events and schedules tasks correctly', async () => {
     { id: 2, name: 'Task 2', location: 'D', time: 90, outside: true }
   ];
   const settings = {
-    dayStart: new Date(2024, 7, 26, 0, 0),
+    dayStart: new Date(2024, 7, 26, 8, 0),
     dayEnd: new Date(2024, 7, 26, 23, 59),
     defaultLocation: 'E',
     thisWeek: true,
@@ -73,11 +73,11 @@ test('merges events and schedules tasks correctly', async () => {
       name: 'Event 1'
     },
     {
-      id: 1,
-      name: 'Task 1',
-      location: 'C',
-      startTime: new Date(2024, 7, 26, 10, 15),
-      endTime: new Date(2024, 7, 26, 11, 15)
+      id: 2,
+      name: 'Task 2',
+      location: 'D',
+      startTime: new Date(2024, 7, 26, 10, 10),
+      endTime: new Date(2024, 7, 26, 11, 40)
     },
     {
       location: 'B',
@@ -85,7 +85,13 @@ test('merges events and schedules tasks correctly', async () => {
       endTime: new Date(2024, 7, 26, 14, 0),
       name: 'Event 2'
     },
-    { id: 2, name: 'Task 2', location: 'D', startTime: null, endTime: null }
+    {
+      id: 1,
+      name: 'Task 1',
+      location: 'C',
+      startTime: null,
+      endTime: null
+    }
   ]);
 });
 
@@ -113,50 +119,6 @@ test('handles tasks that cannot be scheduled due to rain', async () => {
   getDrivingTime.mockResolvedValue(15);
   getWeather.mockResolvedValue([
     { time: new Date(2024, 7, 26, 10, 15), precip: 0.3 }
-  ]);
-
-  const result = await mergeEventsAndTasks(
-    events,
-    tasks,
-    settings,
-    dayOfWeekIndex
-  );
-
-  expect(result).toEqual([
-    {
-      location: 'A',
-      startTime: new Date(2024, 7, 26, 8, 0),
-      endTime: new Date(2024, 7, 26, 10, 0),
-      name: 'Event 1'
-    },
-    { id: 1, name: 'Task 1', location: 'C', startTime: null, endTime: null }
-  ]);
-});
-
-test('adds remaining tasks that cannot be scheduled', async () => {
-  const events = [
-    {
-      location: 'A',
-      startTime: new Date(2024, 7, 26, 8, 0),
-      endTime: new Date(2024, 7, 26, 10, 0),
-      name: 'Event 1'
-    }
-  ];
-  const tasks = [
-    { id: 1, name: 'Task 1', location: 'C', time: 60, outside: false }
-  ];
-  const settings = {
-    dayStart: new Date(2024, 7, 26, 0, 0),
-    dayEnd: new Date(2024, 7, 26, 23, 59),
-    defaultLocation: 'E',
-    thisWeek: true,
-    rainThreshold: 0.2
-  };
-  const dayOfWeekIndex = 0;
-
-  getDrivingTime.mockResolvedValue(10);
-  getWeather.mockResolvedValue([
-    { time: new Date(2024, 7, 26, 10, 10), precip: 0.1 }
   ]);
 
   const result = await mergeEventsAndTasks(

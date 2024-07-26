@@ -10,13 +10,12 @@ to better fit the needs of the project. Unless otherwise noted, all other files 
 */
 
 /**
- * Sorts the events by start time and schedules tasks at the earliest possible time
- * Only works if all events are on the same day given that it adds the "sleep" events
- * @param {Array} events - Array of events you want to sort and merge with tasks
- * @param {Array} tasks - Array of tasks you want to merge with events
- * @param {Object} settings - Settings object
- * @param {Number} dayOfWeekIndex - Index of the day of the week (Sunday is zero)
- * @returns {Array} - Array of merged events and tasks
+ * Sorts the events by start time and schedules tasks at the earliest possible time.
+ * @param {Array} events - Array of events to be merged and sorted.
+ * @param {Array} tasks - Array of tasks to be scheduled.
+ * @param {Object} settings - Configuration settings.
+ * @param {Number} dayOfWeekIndex - Index of the day of the week (Sunday is zero).
+ * @returns {Array} - Array of merged events and scheduled tasks.
  */
 const mergeEventsAndTasks = async (
   events,
@@ -24,10 +23,10 @@ const mergeEventsAndTasks = async (
   { dayStart, dayEnd, defaultLocation, thisWeek, rainThreshold },
   dayOfWeekIndex
 ) => {
-  // Declare schedule array
+  // Initialize schedule array
   let schedule = [];
 
-  // Add sleeping time
+  // Add default sleep events
   const eventsWithDefaults = [
     {
       location: defaultLocation,
@@ -46,92 +45,75 @@ const mergeEventsAndTasks = async (
     }
   ];
 
-  // Sort events and merge the ones that overlap
+  // Merge overlapping events
   const mergedEventsWithDefaults = mergeOverlappingEvents(eventsWithDefaults);
 
-  // Schedule tasks
+  // Iterate over merged events and tasks
   let tasksMutable = tasks;
   for (let i = 0; i < mergedEventsWithDefaults.length - 1; i++) {
     let lastEventOrTask = mergedEventsWithDefaults[i];
-    if (i > 0 || lastEventOrTask.endTime !== dayStart)
+
+    if (i > 0 || lastEventOrTask.endTime !== dayStart) {
       schedule.push(lastEventOrTask);
+    }
+
     for (let j = 0; j < tasksMutable.length; j++) {
-      // Account for driving time
       const drivingTimeTo = await getDrivingTime(
-        lastEventOrTask.location ? lastEventOrTask.location : defaultLocation,
-        tasksMutable[j].location ? tasksMutable[j].location : defaultLocation
-      );
-      const drivingTimeFrom = await getDrivingTime(
-        tasksMutable[j].location ? tasksMutable[j].location : defaultLocation,
-        mergedEventsWithDefaults[i + 1].location
-          ? mergedEventsWithDefaults[i + 1].location
-          : defaultLocation
+        lastEventOrTask.location || defaultLocation,
+        tasksMutable[j].location || defaultLocation
       );
 
-      // If possible, schedule the task, otherwise try the next one
-      if (
-        // Check if there's time
-        addMinutes(
-          lastEventOrTask.endTime,
-          drivingTimeTo + drivingTimeFrom + tasksMutable[j].time
-        ) < mergedEventsWithDefaults[i + 1].startTime &&
-        // Check to make sure the rain is ok
-        (!tasksMutable[j].outside ||
-          !(
-            (
-              await getWeather(
-                tasksMutable[j].location,
-                buildDateList(
-                  addMinutes(
-                    lastEventOrTask.endTime,
-                    drivingTimeTo + drivingTimeFrom + tasksMutable[j].time
-                  ),
-                  mergedEventsWithDefaults[i + 1].startTime,
-                  dayOfWeekIndex,
-                  thisWeek
-                )
-              )
-            ).filter((hour) => hour.precip > rainThreshold).length > 0
-          ))
-      ) {
+      const drivingTimeFrom = await getDrivingTime(
+        tasksMutable[j].location || defaultLocation,
+        mergedEventsWithDefaults[i + 1].location || defaultLocation
+      );
+
+      // Calculate potential task start and end times
+      const taskStartTime = addMinutes(lastEventOrTask.endTime, drivingTimeTo);
+      const taskEndTime = addMinutes(taskStartTime, tasksMutable[j].time);
+      const nextEventStartTime = mergedEventsWithDefaults[i + 1].startTime;
+
+      // Check if the task fits within the available time slot and weather conditions
+      const canFit =
+        addMinutes(taskEndTime, drivingTimeFrom) <= nextEventStartTime;
+      const weatherConditions = await getWeather(
+        tasksMutable[j].location || defaultLocation,
+        buildDateList(taskStartTime, taskEndTime, dayOfWeekIndex, thisWeek)
+      );
+
+      const isWeatherSuitable =
+        !tasksMutable[j].outside ||
+        weatherConditions.every((hour) => hour.precip <= rainThreshold);
+
+      if (canFit && isWeatherSuitable) {
         schedule.push({
           id: tasksMutable[j].id,
           name: tasksMutable[j].name,
           location: tasksMutable[j].location,
-          startTime: addMinutes(lastEventOrTask.endTime, drivingTimeTo),
-          endTime: addMinutes(
-            lastEventOrTask.endTime,
-            drivingTimeTo + tasksMutable[j].time
-          )
+          startTime: taskStartTime,
+          endTime: taskEndTime
         });
+
         lastEventOrTask = schedule[schedule.length - 1];
         tasksMutable = tasksMutable.filter(
           (task) => task.id !== tasksMutable[j].id
         );
-        j--;
+        j--; // Adjust index after removal
       }
     }
   }
 
-  // Add last event if it's more than just sleeping
-  if (
-    mergedEventsWithDefaults[mergedEventsWithDefaults.length - 1].startTime !==
-    dayEnd
-  )
-    schedule.push(
-      mergedEventsWithDefaults[mergedEventsWithDefaults.length - 1]
-    );
-
-  // Add all remaining tasks that cannot be scheduled
-  for (let i = 0; i < tasksMutable.length; i++) {
+  // Add remaining tasks that couldn't be scheduled
+  for (const task of tasksMutable) {
     schedule.push({
-      id: tasksMutable[i].id,
-      name: tasksMutable[i].name,
-      location: tasksMutable[i].location,
+      id: task.id,
+      name: task.name,
+      location: task.location,
       startTime: null,
       endTime: null
     });
   }
+
   return schedule;
 };
 
