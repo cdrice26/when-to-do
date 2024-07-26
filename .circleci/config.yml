@@ -3,7 +3,7 @@ version: 2.1
 executors:
   node-executor:
     docker:
-      - image: circleci/node:16  # You can use a different Node version if needed
+      - image: circleci/node:18  # You can use a different Node version if needed
 
 jobs:
   install-and-test:
