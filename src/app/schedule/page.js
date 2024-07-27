@@ -1,31 +1,49 @@
 'use client';
 
 import UnscheduledTaskList from '../../components/schedule/UnscheduledTaskList';
-//import Schedule from '../../components/schedule/Schedule';
+import Schedule from '../../components/schedule/Schedule';
+import { TasksContext } from '@/constants/context';
+import { useState, useContext } from 'react';
 
 /**
  * Overall component to display the scheduling screen
  */
 const ScheduleScreen = () => {
-  const scheduleOnDay = () => {};
+  // Load tasks context
+  const [_tasks, setTasks] = useContext(TasksContext);
+
+  // List of events on each day
+  const [eventsOnDays, setEventsOnDays] = useState([]);
+
+  // List of tasks on each day
+  const [tasksOnDays, setTasksOnDays] = useState([]);
+
+  const scheduleOnDay = (dayIndex, taskId) => {
+    setTasksOnDays((prevTasksOnDays) => [
+      ...prevTasksOnDays.slice(0, dayIndex),
+      [...prevTasksOnDays[dayIndex], taskId],
+      ...prevTasksOnDays.slice(dayIndex + 1)
+    ]);
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, scheduled: true } : task
+      )
+    );
+  };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        flex: 1,
-        backgroundColor: 'white',
-        width: '100%',
-        height: '100%',
-        paddingBottom: 20
-      }}
-    >
+    <div className='flex flex-col sm:flex-row w-full h-full'>
       <UnscheduledTaskList
         style={{ flex: 1, padding: 10, marginBottom: 10 }}
         scheduleOnDay={scheduleOnDay}
       />
-      {/* <Schedule style={{ flex: 1, padding: 10, marginBottom: 10 }} /> */}
+      <Schedule
+        style={{ flex: 1, padding: 10, marginBottom: 10 }}
+        tasksOnDays={tasksOnDays}
+        setTasksOnDays={setTasksOnDays}
+        eventsOnDays={eventsOnDays}
+        setEventsOnDays={setEventsOnDays}
+      />
     </div>
   );
 };

@@ -12,7 +12,7 @@ const UnscheduledTaskList = ({ style, scheduleOnDay }) => {
   return (
     <div style={style}>
       <span style={{ fontWeight: 'bold' }}>Unscheduled Tasks</span>
-      <div>
+      <div style={{ position: 'relative', overflowY: 'auto' }}>
         {tasks
           .filter((task) => !task.scheduled)
           .map((task, i) => (

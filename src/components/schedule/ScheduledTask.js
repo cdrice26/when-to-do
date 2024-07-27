@@ -1,5 +1,5 @@
-import { View, Button, StyleSheet } from 'react-native';
 import ScheduledEvent from './ScheduledEvent';
+import Button from '../general/Button';
 
 /**
  * One task on the schedule screen
@@ -8,20 +8,20 @@ import ScheduledEvent from './ScheduledEvent';
  */
 const ScheduledTask = ({ task, unscheduleTask }) => {
   return (
-    <View style={styles.container}>
+    <div style={styles.container}>
       <ScheduledEvent event={task} container={false} />
-      <Button title='Unschedule' onPress={() => unscheduleTask(task)} />
-    </View>
+      <Button text='Unschedule' onClick={() => unscheduleTask(task)} />
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     padding: 10,
     borderRadius: 5,
     backgroundColor: 'lightgrey',
     marginTop: 10
   }
-});
+};
 
 export default ScheduledTask;

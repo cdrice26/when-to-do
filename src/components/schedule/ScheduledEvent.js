@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet } from 'react-native';
 import { useContext } from 'react';
-import { SettingsContext } from './context';
+import { SettingsContext } from '../../constants/context';
 
 /**
  * One event on the schedule screen
@@ -11,21 +10,20 @@ const ScheduledEvent = ({ event, container }) => {
   const settings = useContext(SettingsContext);
 
   return (
-    <View style={container ? styles.container : null}>
-      <Text style={{ fontWeight: 'bold' }}>
+    <div style={container ? styles.container : null}>
+      <span style={{ fontWeight: 'bold' }}>
         {event?.name !== '' ? event?.name : 'Unnamed'}
-      </Text>
-      <Text>
-        @
-        {event?.location !== ''
-          ? event?.location
-          : settings.settings.defaultLocation}
-      </Text>
+      </span>
+      <span>
+        @{event?.location !== '' ? event?.location : settings.defaultLocation}
+      </span>
       {/* SOURCE: https://stackoverflow.com/questions/17913681/ */}
       {event?.startTime === null ? (
-        <Text style={{ color: 'red' }}>There's no time for this today!</Text>
+        <span style={{ color: 'red' }}>
+          There&apos;s no time for this today!
+        </span>
       ) : (
-        <Text>
+        <span>
           {event?.startTime.toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit'
@@ -35,19 +33,19 @@ const ScheduledEvent = ({ event, container }) => {
             hour: '2-digit',
             minute: '2-digit'
           })}
-        </Text>
+        </span>
       )}
-    </View>
+    </div>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     padding: 10,
     borderRadius: 5,
     backgroundColor: 'lightgrey',
     marginTop: 10
   }
-});
+};
 
 export default ScheduledEvent;
