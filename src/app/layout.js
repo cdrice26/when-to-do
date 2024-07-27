@@ -1,5 +1,5 @@
 import { Inter } from 'next/font/google';
-import NavButton from '../components/NavButton';
+import NavButton from '../components/general/NavButton';
 import { CiCalendar, CiClock2, CiHome, CiSettings } from 'react-icons/ci';
 import { LiaTasksSolid } from 'react-icons/lia';
 import { ContextProvider } from '../constants/context';

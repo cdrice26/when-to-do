@@ -1,6 +1,6 @@
 import React from 'react';
-import TimePicker from './TimePicker';
-import Button from './Button';
+import TimePicker from './general/TimePicker';
+import Button from './general/Button';
 
 /**
  * Component to display a task on the tasks screen
@@ -39,12 +39,14 @@ const Task = ({
       </div>
       <div style={styles.timePickers}>
         <span>Time: </span>
-        <TimePicker
+        <input
+          style={styles.textInput}
+          type='number'
+          min='0'
           value={time}
-          onChange={(selectedTime) =>
-            onTimeChange(new Date(0, 0, 0, ...selectedTime.split(':')))
-          }
-        />
+          onChange={(e) => onTimeChange(e.target.value)}
+        />{' '}
+        minutes
       </div>
       <div style={styles.timePickers}>
         <span>Is Outside: </span>

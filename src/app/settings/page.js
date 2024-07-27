@@ -1,6 +1,6 @@
 'use client';
 
-import TimePicker from '../../components/TimePicker';
+import TimePicker from '../../components/general/TimePicker';
 import { useContext } from 'react';
 import { SettingsContext } from '../../constants/context';
 

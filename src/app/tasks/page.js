@@ -9,7 +9,7 @@ import {
   editElementInState
 } from '../../helper/stateMutation';
 import randId from '../../helper/UUID';
-import AddButton from '../../components/AddButton';
+import AddButton from '../../components/general/AddButton';
 
 /**
  * Overall component for displaying the task editing screen

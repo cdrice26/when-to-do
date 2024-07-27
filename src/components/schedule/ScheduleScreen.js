@@ -1,7 +1,5 @@
-'use client';
-
-import UnscheduledTaskList from '../../components/schedule/UnscheduledTaskList';
-//import Schedule from '../../components/schedule/Schedule';
+import UnscheduledTaskList from './UnscheduledTaskList';
+import Schedule from './Schedule';
 
 /**
  * Overall component to display the scheduling screen

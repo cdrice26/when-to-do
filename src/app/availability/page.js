@@ -9,7 +9,7 @@ import {
   editElementInState
 } from '../../helper/stateMutation';
 import randId from '../../helper/UUID';
-import AddButton from '../../components/AddButton';
+import AddButton from '../../components/general/AddButton';
 
 /**
  * Component for availability screen (where you create events)

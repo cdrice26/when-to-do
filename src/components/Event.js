@@ -1,6 +1,6 @@
-import DaySelector from './DaySelector';
-import TimePicker from './TimePicker';
-import Button from './Button';
+import DaySelector from './general/DaySelector';
+import TimePicker from './general/TimePicker';
+import Button from './general/Button';
 import React from 'react';
 
 /**
