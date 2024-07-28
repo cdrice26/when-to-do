@@ -10,9 +10,9 @@ const UnscheduledTaskList = ({ style, scheduleOnDay }) => {
   const [tasks, _setTasks] = useContext(TasksContext);
 
   return (
-    <div className='flex-1 p-[10px] mb-[10px] overflow-hidden'>
+    <div className='flex-1 p-[10px] mb-[10px] relative overflow-y-scroll'>
       <strong>Unscheduled Tasks</strong>
-      <div className='relative overflow-y-auto'>
+      <div className='relative'>
         {tasks
           .filter((task) => !task.scheduled)
           .map((task, i) => (

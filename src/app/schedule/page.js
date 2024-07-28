@@ -53,7 +53,7 @@ const ScheduleScreen = () => {
   };
 
   return (
-    <div className='flex flex-col sm:flex-row w-full h-full'>
+    <div className='flex flex-col sm:flex-row w-full h-full relative overflow-y-hidden'>
       <UnscheduledTaskList scheduleOnDay={scheduleOnDay} />
       <Schedule
         tasksOnDays={tasksOnDays}

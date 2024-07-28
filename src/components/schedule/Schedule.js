@@ -70,6 +70,7 @@ const Schedule = ({
         settings,
         i
       );
+      console.log(newSchedule);
       newSchedule.push(merged);
     }
     setScheduled(newSchedule);
@@ -170,7 +171,7 @@ const Schedule = ({
   }, [tasksOnDays]);
 
   return (
-    <div className='flex-1 p-[10px] mb-[10px]'>
+    <div className='flex-1 p-[10px] mb-[10px] relative overflow-y-scroll'>
       {isLoading ? (
         <div className='w-full h-full flex justify-center items-center'>
           <div>Generating your schedule...</div>
@@ -178,13 +179,14 @@ const Schedule = ({
       ) : (
         <div>
           <span className='font-bold'>Scheduled Events and Tasks</span>
-          <div className='pt-[10px] relative overflow-y-auto'>
+          <div className='pt-[10px]'>
             {days.map((day, i) => (
               <div key={i}>
-                <div className='p-[10px] bg-gray-200 mb-[10px] rounded'>
+                <div className='p-[10px] bg-gray-200 mb-[10px] rounded-lg'>
                   <span className='font-bold text-[24px]'>{day}</span>
                   {scheduled[i].map((event, j) =>
-                    Object.keys(event).includes('days') ? (
+                    Object.keys(event).includes('days') ||
+                    !Object.keys(event).includes('id') ? (
                       <ScheduledEvent event={event} key={j} container={true} />
                     ) : (
                       <ScheduledTask
