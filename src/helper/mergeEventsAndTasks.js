@@ -60,11 +60,11 @@ const mergeEventsAndTasks = async (
     for (let j = 0; j < tasksMutable.length; j++) {
       const drivingTimeTo = await getDrivingTime(
         lastEventOrTask.location || defaultLocation,
-        tasksMutable[j].location || defaultLocation
+        tasksMutable[j]?.location || defaultLocation
       );
 
       const drivingTimeFrom = await getDrivingTime(
-        tasksMutable[j].location || defaultLocation,
+        tasksMutable[j]?.location || defaultLocation,
         mergedEventsWithDefaults[i + 1].location || defaultLocation
       );
 
@@ -77,7 +77,7 @@ const mergeEventsAndTasks = async (
       const canFit =
         addMinutes(taskEndTime, drivingTimeFrom) <= nextEventStartTime;
       const weatherConditions = await getWeather(
-        tasksMutable[j].location || defaultLocation,
+        tasksMutable[j]?.location || defaultLocation,
         buildDateList(taskStartTime, taskEndTime, dayOfWeekIndex, thisWeek)
       );
 
@@ -89,7 +89,7 @@ const mergeEventsAndTasks = async (
         schedule.push({
           id: tasksMutable[j].id,
           name: tasksMutable[j].name,
-          location: tasksMutable[j].location,
+          location: tasksMutable[j]?.location,
           startTime: taskStartTime,
           endTime: taskEndTime
         });
