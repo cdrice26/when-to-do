@@ -10,8 +10,10 @@ const ScheduledEvent = ({ event, container }) => {
   const [settings, _setSettings] = useContext(SettingsContext);
 
   return (
-    <div style={container ? styles.container : null}>
-      <div style={{ fontWeight: 'bold' }}>
+    <div
+      className={container ? 'p-[10px] rounded-lg bg-gray-300 mt-[10px]' : null}
+    >
+      <div className='font-bold'>
         {event?.name !== '' ? event?.name : 'Unnamed'}
       </div>
       <div>
@@ -19,7 +21,7 @@ const ScheduledEvent = ({ event, container }) => {
       </div>
       {/* SOURCE: https://stackoverflow.com/questions/17913681/ */}
       {event?.startTime === null ? (
-        <div style={{ color: 'red' }}>There&apos;s no time for this today!</div>
+        <div className='text-red-500'>There&apos;s no time for this today!</div>
       ) : (
         <div>
           {event?.startTime.toLocaleTimeString([], {
@@ -35,15 +37,6 @@ const ScheduledEvent = ({ event, container }) => {
       )}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'lightgrey',
-    marginTop: 10
-  }
 };
 
 export default ScheduledEvent;

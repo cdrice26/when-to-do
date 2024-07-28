@@ -15,10 +15,12 @@ import AddButton from '../../components/general/AddButton';
  * Component for availability screen (where you create events)
  */
 const AvailabilityScreen = () => {
-  // Access the events list
+  /** Access the events list */
   const [events, setEvents] = useContext(EventsContext);
 
-  // Add an event to the list
+  /**
+   * Add an event to the list
+   */
   const addEvent = () => {
     addToState(events, setEvents, {
       name: '',
@@ -30,17 +32,32 @@ const AvailabilityScreen = () => {
     });
   };
 
-  // Remove an event from the list
+  /**
+   * Remove an event from the list
+   *
+   * @param {number} eventIndex - The index of the event to remove
+   */
   const deleteEvent = (eventIndex) => {
     removeFromState(events, setEvents, eventIndex);
   };
 
-  // Edit an event in the list
+  /**
+   * Edit an event in the list
+   *
+   * @param {number} eventIndex - The index of the event to edit
+   * @param {string} parameter - The parameter to edit within the event
+   * @param {any} value - The new value to set for the parameter
+   */
   const editEvent = (eventIndex, parameter, value) => {
     editElementInState(events, setEvents, eventIndex, parameter, value);
   };
 
-  // Toggle a day in an event
+  /**
+   * Toggle a day in an event
+   *
+   * @param {number} eventIndex - The index of the event to edit
+   * @param {number} dayIndex - The index of the day to toggle
+   */
   const toggleDay = (eventIndex, dayIndex) => {
     editElementInState(events, setEvents, eventIndex, 'days', [
       ...events[eventIndex].days.slice(0, dayIndex),

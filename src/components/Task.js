@@ -18,29 +18,29 @@ const Task = ({
   onDestroy
 }) => {
   return (
-    <div style={styles.container}>
-      <div style={styles.timePickers}>
+    <div className='bg-gray-200 rounded-lg my-[10px] pt-[10px] flex-shrink h-[250px] text-center'>
+      <div className={styles.timePickers}>
         <span>Name: </span>
         <input
-          style={styles.textInput}
+          className={styles.textInput}
           value={name}
           placeholder='New Task'
           onInput={(e) => onNameChange(e.target.value)}
         />
       </div>
-      <div style={styles.timePickers}>
+      <div className={styles.timePickers}>
         <span>Location: </span>
         <input
-          style={styles.textInput}
+          className={styles.textInput}
           value={location}
           placeholder='Somewhere'
           onInput={(e) => onLocationChange(e.target.value)}
         />
       </div>
-      <div style={styles.timePickers}>
+      <div className={styles.timePickers}>
         <span>Time: </span>
         <input
-          style={styles.textInput}
+          className={styles.textInput}
           type='number'
           min='0'
           value={time}
@@ -48,7 +48,7 @@ const Task = ({
         />{' '}
         minutes
       </div>
-      <div style={styles.timePickers}>
+      <div className={styles.timePickers}>
         <span>Is Outside: </span>
         <input
           type='checkbox'
@@ -63,33 +63,9 @@ const Task = ({
 };
 
 const styles = {
-  container: {
-    backgroundColor: 'rgb(235, 235, 235)',
-    borderRadius: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    paddingTop: 5,
-    flexShrink: 1,
-    height: 250,
-    textAlign: 'center'
-  },
-  timePickers: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 5,
-    padding: 5,
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  textInput: {
-    height: 40,
-    backgroundColor: 'lightgrey',
-    borderRadius: 5,
-    flex: 1,
-    padding: 10
-  }
+  timePickers:
+    'flex flex-row justify-center items-center gap-[5px] p-[5px] px-[10px]',
+  textInput: 'h-[40px] bg-gray-300 rounded flex-1 p-[10px]'
 };
 
 export default Task;

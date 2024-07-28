@@ -4,18 +4,18 @@ import DaySelector from '../general/DaySelector';
 
 /**
  * One task in the unscheduled tasks list
- * Note this uses a <DraxView /> so it is draggable...
- *   it will send its id along with its type (always 'task')
  * @param {Object} props - Includes a task property with an object containing all
- *                         the information necessary to display the task
+ *                         the information necessary to display the task, as well as a
+ *                         scheduleOnDay function which will be called when the user clicks
+ *                         on the day selector
  */
 const UnscheduledTask = ({ task, scheduleOnDay }) => {
   const [settings, _setSettings] = useContext(SettingsContext);
 
   return (
     <div>
-      <div style={styles.container}>
-        <div style={{ fontWeight: 'bold' }}>
+      <div className='p-[10px] rounded-lg bg-gray-200 mt-[10px]'>
+        <div className='font-bold'>
           {task.name !== '' ? task.name : 'Unnamed'}
         </div>
         <div>
@@ -29,15 +29,6 @@ const UnscheduledTask = ({ task, scheduleOnDay }) => {
       </div>
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'rgb(235, 235, 235)',
-    marginTop: 10
-  }
 };
 
 export default UnscheduledTask;

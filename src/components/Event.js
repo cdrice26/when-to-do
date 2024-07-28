@@ -21,18 +21,18 @@ const Event = ({
   onDestroy
 }) => {
   return (
-    <div style={styles.container}>
-      <div style={styles.timePickers}>
+    <div className='bg-gray-200 rounded-lg my-[10px] pt-[10px] flex-shrink h-[250px] text-center'>
+      <div className={styles.timePickers}>
         <div>Name: </div>
         <input
-          style={styles.textInput}
+          className={styles.textInput}
           value={name}
           placeholder='New Event'
           onInput={(e) => onNameChange(e.target.value)}
         />
       </div>
       <DaySelector daysSelected={days} onChange={onDayChange} />
-      <div style={styles.timePickers}>
+      <div className={styles.timePickers}>
         <TimePicker
           label='Start: '
           value={startTime}
@@ -48,10 +48,10 @@ const Event = ({
           }
         />
       </div>
-      <div style={styles.timePickers}>
+      <div className={styles.timePickers}>
         <div>Location: </div>
         <input
-          style={styles.textInput}
+          className={styles.textInput}
           value={location}
           placeholder='Somewhere'
           onInput={(e) => onLocationChange(e.target.value)}
@@ -65,31 +65,9 @@ const Event = ({
 };
 
 const styles = {
-  container: {
-    backgroundColor: 'rgb(235, 235, 235)',
-    borderRadius: 10,
-    marginTop: 10,
-    marginBottom: 10,
-    paddingTop: 5,
-    flexShrink: 1,
-    height: 350
-  },
-  timePickers: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 5,
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  textInput: {
-    height: 40,
-    backgroundColor: 'lightgrey',
-    borderRadius: 5,
-    flex: 1,
-    padding: 10
-  }
+  timePickers:
+    'flex flex-row justify-center items-center gap-[5px] p-[5px] px-[10px]',
+  textInput: 'h-[40px] bg-gray-300 rounded flex-1 p-[10px]'
 };
 
 export default Event;

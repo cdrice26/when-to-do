@@ -15,7 +15,7 @@ import AddButton from '../../components/general/AddButton';
  * Overall component for displaying the task editing screen
  */
 const TasksScreen = () => {
-  // Load in list of tasks
+  /** Load in list of tasks */
   const [tasks, setTasks] = useContext(TasksContext);
 
   /**

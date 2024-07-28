@@ -6,39 +6,20 @@ const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
  */
 const DaySelector = ({ daysSelected, onChange }) => {
   return (
-    <div style={styles.container}>
+    <div className='flex flex-row justify-center'>
       {days.map((day, i) => (
         <button
           key={i}
-          style={styles.button(daysSelected[i])}
+          className={`m-[10px] rounded-full flex-1 h-[30px] w-[30px] items-center justify-center bg-${
+            daysSelected[i] ? 'blue-500' : 'gray-300'
+          }`}
           onClick={() => onChange(i)}
         >
-          <div style={styles.text}>{day}</div>
+          <div className='font-[14px]'>{day}</div>
         </button>
       ))}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center'
-  },
-  button: (selected) => ({
-    margin: 10,
-    borderRadius: 15,
-    flex: 1,
-    height: 30,
-    width: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: selected ? 'rgb(50, 150, 255)' : 'lightgrey'
-  }),
-  text: {
-    fontSize: 14
-  }
 };
 
 export default DaySelector;

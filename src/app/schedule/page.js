@@ -9,15 +9,29 @@ import { useState, useContext } from 'react';
  * Overall component to display the scheduling screen
  */
 const ScheduleScreen = () => {
-  // Load tasks context
+  /**
+   * Load tasks context.
+   */
   const [_tasks, setTasks] = useContext(TasksContext);
 
-  // List of events on each day
+  /**
+   * List of events scheduled on each day.
+   * Each entry is an array of event ids.
+   */
   const [eventsOnDays, setEventsOnDays] = useState([]);
 
-  // List of tasks on each day
+  /**
+   * List of tasks on each day.
+   * Each entry is an array of task ids.
+   */
   const [tasksOnDays, setTasksOnDays] = useState([]);
 
+  /**
+   * Schedule a task on a specific day.
+   *
+   * @param {number} dayIndex - The index of the day in the schedule array.
+   * @param {string} taskId - The ID of the task to be scheduled.
+   */
   const scheduleOnDay = (dayIndex, taskId) => {
     setTasksOnDays((prevTasksOnDays) => [
       ...prevTasksOnDays.slice(0, dayIndex),
@@ -33,12 +47,8 @@ const ScheduleScreen = () => {
 
   return (
     <div className='flex flex-col sm:flex-row w-full h-full'>
-      <UnscheduledTaskList
-        style={{ flex: 1, padding: 10, marginBottom: 10 }}
-        scheduleOnDay={scheduleOnDay}
-      />
+      <UnscheduledTaskList scheduleOnDay={scheduleOnDay} />
       <Schedule
-        style={{ flex: 1, padding: 10, marginBottom: 10 }}
         tasksOnDays={tasksOnDays}
         setTasksOnDays={setTasksOnDays}
         eventsOnDays={eventsOnDays}

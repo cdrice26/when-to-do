@@ -19,25 +19,28 @@ const days = [
 ];
 
 /**
- *
+ * Component for the schedule screen
  * @param {Object} props - Object with style prop for setting style of overall container
  */
 const Schedule = ({
-  style,
   tasksOnDays,
   eventsOnDays,
   setTasksOnDays,
   setEventsOnDays
 }) => {
-  // Stores the scheduled events and tasks in the correct order
+  /**
+   * Stores the scheduled events and tasks in the correct order
+   */
   const [scheduled, setScheduled] = useState(new Array(days.length).fill([]));
 
-  // Load all contexts to get events, tasks, and settings
+  /** Load all contexts to get events, tasks, and settings */
   const [settings, _setSettings] = useContext(SettingsContext);
   const [tasks, setTasks] = useContext(TasksContext);
   const [events, _setevents] = useContext(EventsContext);
 
-  // Keep track of loading status
+  /**
+   * Stores if the schedule is loading
+   */
   const [isLoading, setIsLoading] = useState(false);
 
   /**
@@ -72,7 +75,9 @@ const Schedule = ({
     setScheduled(newSchedule);
   };
 
-  // Load events and tasks on each day
+  /**
+   * Load events and tasks on each day
+   */
   useEffect(() => {
     (async () => {
       const newEventsOnDays = JSON.parse(localStorage.getItem('eventsOnDays'));
@@ -91,8 +96,10 @@ const Schedule = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Update tasks on each day by putting all tasks assigned to each day
-  // in the correct slot in tasksOnDays
+  /**
+   * Update tasks on each day by putting all tasks assigned to each day
+   * in the correct slot in tasksOnDays.
+   */
   useEffect(() => {
     if (tasksOnDays.length == 0) return;
     setTasksOnDays((prevTasks) =>
@@ -107,8 +114,10 @@ const Schedule = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks, tasksOnDays.length]);
 
-  // Update events on each day by putting all events assigned to each day
-  // in the correct slot in eventsOnDays
+  /**
+   * Update events on each day by putting all events assigned to each day
+   * in the correct slot in eventsOnDays.
+   */
   useEffect(() => {
     setEventsOnDays(
       days.map((_day, i) =>
@@ -120,52 +129,60 @@ const Schedule = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events]);
 
-  // Set the loading indicator when something changes
+  /**
+   * Set the loading indicator when something changes
+   */
   useEffect(() => {
     setIsLoading(true);
   }, [tasks, events, eventsOnDays, tasksOnDays]);
 
-  // Reset the loading indicator when the schedule changes
+  /**
+   * Reset the loading indicator when the schedule is generated
+   */
   useEffect(() => {
     setIsLoading(false);
   }, [scheduled]);
 
-  // Refresh the schedule when settings change or additional tasks or events are assigned
-  // to a day
+  /**
+   * Refresh the schedule when settings change or additional tasks or events are assigned
+   * to a day.
+   */
   useEffect(() => {
     if (tasksOnDays.length == 0) return;
     refreshSchedule();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsOnDays, tasksOnDays, settings]);
 
-  // Store scheduled events in storage
+  /**
+   * Store scheduled events in localStorage.
+   */
   useEffect(() => {
     if (eventsOnDays.length == 0) return;
     localStorage.setItem('eventsOnDays', JSON.stringify(eventsOnDays));
   }, [eventsOnDays]);
 
-  // Store scheduled tasks in storage
+  /**
+   * Store scheduled tasks in storage.
+   */
   useEffect(() => {
     if (tasksOnDays.length == 0) return;
     localStorage.setItem('tasksOnDays', JSON.stringify(tasksOnDays));
   }, [tasksOnDays]);
 
   return (
-    <div style={style}>
+    <div className='flex-1 p-[10px] mb-[10px]'>
       {isLoading ? (
         <div className='w-full h-full flex justify-center items-center'>
           <div>Generating your schedule...</div>
         </div>
       ) : (
         <div>
-          <span style={{ fontWeight: 'bold' }}>Scheduled Events and Tasks</span>
-          <div
-            style={{ paddingTop: 10, position: 'relative', overflowY: 'auto' }}
-          >
+          <span className='font-bold'>Scheduled Events and Tasks</span>
+          <div className='pt-[10px] relative overflow-y-auto'>
             {days.map((day, i) => (
               <div key={i}>
-                <div style={styles.container}>
-                  <span style={styles.dayTitle}>{day}</span>
+                <div className='p-[10px] bg-gray-200 mb-[10px] rounded'>
+                  <span className='font-bold text-[24px]'>{day}</span>
                   {scheduled[i].map((event, j) =>
                     Object.keys(event).includes('days') ? (
                       <ScheduledEvent event={event} key={j} container={true} />
@@ -185,19 +202,6 @@ const Schedule = ({
       )}
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: 10,
-    backgroundColor: 'rgb(235, 235, 235)',
-    marginBottom: 10,
-    borderRadius: 5
-  },
-  dayTitle: {
-    fontWeight: 'bold',
-    fontSize: 24
-  }
 };
 
 export default Schedule;

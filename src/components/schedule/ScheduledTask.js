@@ -8,20 +8,11 @@ import Button from '../general/Button';
  */
 const ScheduledTask = ({ task, unscheduleTask }) => {
   return (
-    <div style={styles.container}>
+    <div className='p-[10px] rounded-lg bg-gray-300 mt-[10px]'>
       <ScheduledEvent event={task} container={false} />
       <Button text='Unschedule' onClick={() => unscheduleTask(task)} />
     </div>
   );
-};
-
-const styles = {
-  container: {
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: 'lightgrey',
-    marginTop: 10
-  }
 };
 
 export default ScheduledTask;

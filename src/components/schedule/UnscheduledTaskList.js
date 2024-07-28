@@ -10,9 +10,9 @@ const UnscheduledTaskList = ({ style, scheduleOnDay }) => {
   const [tasks, _setTasks] = useContext(TasksContext);
 
   return (
-    <div style={style}>
-      <span style={{ fontWeight: 'bold' }}>Unscheduled Tasks</span>
-      <div style={{ position: 'relative', overflowY: 'auto' }}>
+    <div className='flex-1 p-[10px] mb-[10px] overflow-hidden'>
+      <strong>Unscheduled Tasks</strong>
+      <div className='relative overflow-y-auto'>
         {tasks
           .filter((task) => !task.scheduled)
           .map((task, i) => (

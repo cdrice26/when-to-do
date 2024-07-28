@@ -9,8 +9,8 @@ import './TimePickerStyles.css';
  */
 const TimePicker = (props) => {
   return (
-    <div style={styles.timePickerContainer}>
-      <span style={styles.timePickerLabel}>{props.label}</span>
+    <div className='flex flex-row items-center justify-center gap-[10px]'>
+      <span>{props.label}</span>
       <ReactTimePicker
         value={props.value}
         onChange={props.onChange}
@@ -19,16 +19,6 @@ const TimePicker = (props) => {
       />
     </div>
   );
-};
-
-const styles = {
-  timePickerContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10
-  }
 };
 
 export default TimePicker;
