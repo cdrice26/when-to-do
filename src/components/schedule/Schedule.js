@@ -69,7 +69,6 @@ const Schedule = ({
       );
       newSchedule.push(merged);
     }
-    console.log(newSchedule);
     setScheduled(newSchedule);
   };
 
@@ -89,6 +88,7 @@ const Schedule = ({
         setTasksOnDays(new Array(days.length).fill([]));
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Update tasks on each day by putting all tasks assigned to each day
@@ -104,6 +104,7 @@ const Schedule = ({
         )
       )
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks, tasksOnDays.length]);
 
   // Update events on each day by putting all events assigned to each day
@@ -116,6 +117,7 @@ const Schedule = ({
           .map((event) => ({ type: 'event', payload: event.id }))
       )
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [events]);
 
   // Set the loading indicator when something changes
@@ -133,6 +135,7 @@ const Schedule = ({
   useEffect(() => {
     if (tasksOnDays.length == 0) return;
     refreshSchedule();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eventsOnDays, tasksOnDays, settings]);
 
   // Store scheduled events in storage
