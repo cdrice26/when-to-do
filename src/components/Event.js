@@ -35,14 +35,14 @@ const Event = ({
       <div className={styles.timePickers}>
         <TimePicker
           label='Start: '
-          value={startTime}
+          value={startTime ?? new Date(0, 0, 0, 0, 0)}
           onChange={(selectedTime) =>
             onStartChange(new Date(0, 0, 0, ...selectedTime.split(':')))
           }
         />
         <TimePicker
           label='End: '
-          value={endTime}
+          value={endTime ?? new Date(0, 0, 0, 23, 59)}
           onChange={(selectedTime) =>
             onEndChange(new Date(0, 0, 0, ...selectedTime.split(':')))
           }

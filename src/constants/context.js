@@ -1,6 +1,7 @@
 'use client';
 
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
+import usePersistentState from '../hooks/usePersistentState';
 import randId from '../helper/UUID';
 
 export const EventsContext = createContext();
@@ -14,8 +15,8 @@ const defaultEvent = [
   {
     name: '',
     days: [false, false, false, false, false, false, false],
-    startTime: new Date(0, 0, 0, 0, 0),
-    endTime: new Date(0, 0, 0, 23, 59),
+    startTime: null,
+    endTime: null,
     location: '',
     id: randId()
   }
@@ -39,8 +40,8 @@ const defaultTask = [
  * Default settings
  */
 const defaultSettings = {
-  dayStart: new Date(0, 0, 0, 0, 0),
-  dayEnd: new Date(0, 0, 0, 23, 59),
+  dayStart: null,
+  dayEnd: null,
   defaultLocation: '',
   thisWeek: true,
   rainThreshold: 0.5
@@ -52,7 +53,7 @@ const defaultSettings = {
  * @returns JSX for the provider
  */
 const EventsProvider = ({ children }) => {
-  const [events, setEvents] = useState(defaultEvent);
+  const [events, setEvents] = usePersistentState('events', defaultEvent);
   return (
     <EventsContext.Provider value={[events, setEvents]}>
       {children}
@@ -66,7 +67,7 @@ const EventsProvider = ({ children }) => {
  * @returns JSX for the provider
  */
 const TasksProvider = ({ children }) => {
-  const [tasks, setTasks] = useState(defaultTask);
+  const [tasks, setTasks] = usePersistentState('tasks', defaultTask);
   return (
     <TasksContext.Provider value={[tasks, setTasks]}>
       {children}
@@ -80,7 +81,10 @@ const TasksProvider = ({ children }) => {
  * @returns JSX for the provider
  */
 const SettingsProvider = ({ children }) => {
-  const [settings, setSettings] = useState(defaultSettings);
+  const [settings, setSettings] = usePersistentState(
+    'settings',
+    defaultSettings
+  );
   return (
     <SettingsContext.Provider value={[settings, setSettings]}>
       {children}

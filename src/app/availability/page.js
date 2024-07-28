@@ -10,6 +10,7 @@ import {
 } from '../../helper/stateMutation';
 import randId from '../../helper/UUID';
 import AddButton from '../../components/general/AddButton';
+import useHydration from '../../hooks/useHydration';
 
 /**
  * Component for availability screen (where you create events)
@@ -17,6 +18,12 @@ import AddButton from '../../components/general/AddButton';
 const AvailabilityScreen = () => {
   /** Access the events list */
   const [events, setEvents] = useContext(EventsContext);
+
+  const hydrated = useHydration();
+
+  if (!hydrated) {
+    return null; // Render a placeholder or nothing during SSR
+  }
 
   /**
    * Add an event to the list

@@ -10,6 +10,7 @@ import {
 } from '../../helper/stateMutation';
 import randId from '../../helper/UUID';
 import AddButton from '../../components/general/AddButton';
+import useHydration from '../../hooks/useHydration';
 
 /**
  * Overall component for displaying the task editing screen
@@ -17,6 +18,12 @@ import AddButton from '../../components/general/AddButton';
 const TasksScreen = () => {
   /** Load in list of tasks */
   const [tasks, setTasks] = useContext(TasksContext);
+
+  const hydrated = useHydration();
+
+  if (!hydrated) {
+    return null; // Render a placeholder or nothing during SSR
+  }
 
   /**
    * Add a task to the state array
