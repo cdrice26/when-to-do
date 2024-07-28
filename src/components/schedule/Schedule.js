@@ -153,7 +153,9 @@ const Schedule = ({
   return (
     <div style={style}>
       {isLoading ? (
-        <progress value={null} />
+        <div className='w-full h-full flex justify-center items-center'>
+          <div>Generating your schedule...</div>
+        </div>
       ) : (
         <div>
           <span style={{ fontWeight: 'bold' }}>Scheduled Events and Tasks</span>
