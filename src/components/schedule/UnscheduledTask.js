@@ -15,13 +15,13 @@ const UnscheduledTask = ({ task, scheduleOnDay }) => {
   return (
     <div>
       <div style={styles.container}>
-        <span style={{ fontWeight: 'bold' }}>
+        <div style={{ fontWeight: 'bold' }}>
           {task.name !== '' ? task.name : 'Unnamed'}
-        </span>
-        <span>
+        </div>
+        <div>
           @{task.location !== '' ? task.location : settings.defaultLocation}
-        </span>
-        <span>{task.time} minutes</span>
+        </div>
+        <div>{task.time} minutes</div>
         <DaySelector
           daysSelected={new Array(7).fill(false)}
           onChange={(dayIndex) => scheduleOnDay(dayIndex, task.id)}

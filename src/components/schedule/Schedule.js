@@ -69,6 +69,7 @@ const Schedule = ({
       );
       newSchedule.push(merged);
     }
+    console.log(newSchedule);
     setScheduled(newSchedule);
   };
 
@@ -98,9 +99,8 @@ const Schedule = ({
       days.map((_day, i) =>
         prevTasks[i].filter(
           (event) =>
-            tasks.find(
-              (item) => item.id === event.payload && item.scheduled
-            ) !== undefined
+            tasks.find((item) => item.id === event && item.scheduled) !==
+            undefined
         )
       )
     );

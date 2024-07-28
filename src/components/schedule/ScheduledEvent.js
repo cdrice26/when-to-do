@@ -7,23 +7,21 @@ import { SettingsContext } from '../../constants/context';
  *                         which is a boolean that determines if the event is displayed in a box or nor
  */
 const ScheduledEvent = ({ event, container }) => {
-  const settings = useContext(SettingsContext);
+  const [settings, _setSettings] = useContext(SettingsContext);
 
   return (
     <div style={container ? styles.container : null}>
-      <span style={{ fontWeight: 'bold' }}>
+      <div style={{ fontWeight: 'bold' }}>
         {event?.name !== '' ? event?.name : 'Unnamed'}
-      </span>
-      <span>
+      </div>
+      <div>
         @{event?.location !== '' ? event?.location : settings.defaultLocation}
-      </span>
+      </div>
       {/* SOURCE: https://stackoverflow.com/questions/17913681/ */}
       {event?.startTime === null ? (
-        <span style={{ color: 'red' }}>
-          There&apos;s no time for this today!
-        </span>
+        <div style={{ color: 'red' }}>There&apos;s no time for this today!</div>
       ) : (
-        <span>
+        <div>
           {event?.startTime.toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit'
@@ -33,7 +31,7 @@ const ScheduledEvent = ({ event, container }) => {
             hour: '2-digit',
             minute: '2-digit'
           })}
-        </span>
+        </div>
       )}
     </div>
   );
