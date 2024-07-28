@@ -68,14 +68,18 @@ const SettingsScreen = () => {
           <span>Start Day at Time: </span>
           <TimePicker
             value={settings.dayStart ?? new Date(0, 0, 0, 0, 0)}
-            onChange={(selectedTime) => onStartChange(selectedTime)}
+            onChange={(selectedTime) =>
+              onStartChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+            }
           />
         </div>
         <div style={styles.timePickers}>
           <span>End Day at Time: </span>
           <TimePicker
             value={settings.dayEnd ?? new Date(0, 0, 0, 23, 59)}
-            onChange={(selectedTime) => onEndChange(selectedTime)}
+            onChange={(selectedTime) =>
+              onEndChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+            }
           />
         </div>
         <div style={styles.timePickers}>
