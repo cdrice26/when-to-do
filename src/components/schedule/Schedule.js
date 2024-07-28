@@ -34,7 +34,7 @@ const Schedule = ({
 
   // Load all contexts to get events, tasks, and settings
   const [settings, _setSettings] = useContext(SettingsContext);
-  const [tasks, _setTasks] = useContext(TasksContext);
+  const [tasks, setTasks] = useContext(TasksContext);
   const [events, _setevents] = useContext(EventsContext);
 
   // Keep track of loading status
@@ -45,7 +45,7 @@ const Schedule = ({
    * @param {Object} task - the task to unschedule, as long as the id property is the same, it will work
    */
   const unscheduleTask = (task) => {
-    tasks.setTasks((prevTasks) =>
+    setTasks((prevTasks) =>
       prevTasks.map((item) =>
         item.id == task.id ? { ...item, scheduled: false } : item
       )

@@ -17,6 +17,7 @@ const getCoords = async (location) => {
 
     // If the response is not valid, throw an error
     if (resp1 !== null && !resp1.ok) {
+      console.log(await resp1.json());
       throw new Error('API is down');
     }
 
