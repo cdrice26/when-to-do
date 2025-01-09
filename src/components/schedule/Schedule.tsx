@@ -1,5 +1,5 @@
-import ScheduledEvent from './ScheduledEvent';
-import ScheduledTask from './ScheduledTask';
+import ScheduledEvent from './ScheduledEvent.tsx';
+import ScheduledTask from './ScheduledTask.tsx';
 import { useState, useEffect, useContext } from 'react';
 import {
   SettingsContext,
@@ -7,6 +7,7 @@ import {
   EventsContext
 } from '../../constants/context.tsx';
 import mergeEventsAndTasks from '../../helper/mergeEventsAndTasks.ts';
+import { EventOrTask, Task } from '@/types/instances.ts';
 
 const days = [
   'Sunday',
@@ -18,6 +19,18 @@ const days = [
   'Saturday'
 ];
 
+interface ScheduleProps {
+  tasksOnDays: any;
+  eventsOnDays: any;
+  setTasksOnDays: any;
+  setEventsOnDays: any;
+}
+
+interface Scheduled {
+  type: string;
+  payload: string;
+}
+
 /**
  * Component for the schedule screen
  * @param {Object} props - Object with style prop for setting style of overall container
@@ -27,7 +40,7 @@ const Schedule = ({
   eventsOnDays,
   setTasksOnDays,
   setEventsOnDays
-}) => {
+}: ScheduleProps) => {
   /**
    * Stores the scheduled events and tasks in the correct order
    */
@@ -45,9 +58,9 @@ const Schedule = ({
 
   /**
    * Set the scheduled property of a task to false
-   * @param {Object} task - the task to unschedule, as long as the id property is the same, it will work
+   * @param {Task} task - the task to unschedule, as long as the id property is the same, it will work
    */
-  const unscheduleTask = (task) => {
+  const unscheduleTask = (task: Task) => {
     setTasks((prevTasks) =>
       prevTasks.map((item) =>
         item.id == task.id ? { ...item, scheduled: false } : item
@@ -63,14 +76,15 @@ const Schedule = ({
     for (const day of days) {
       const i = days.indexOf(day);
       const merged = await mergeEventsAndTasks(
-        eventsOnDays[i].map((event) =>
+        eventsOnDays[i].map((event: Scheduled) =>
           events.find((item) => item.id === event.payload)
         ),
-        tasksOnDays[i].map((task) => tasks.find((item) => item.id === task)),
+        tasksOnDays[i].map((task: string) =>
+          tasks.find((item) => item.id === task)
+        ),
         settings,
         i
       );
-      console.log(newSchedule);
       newSchedule.push(merged);
     }
     setScheduled(newSchedule);
@@ -81,8 +95,12 @@ const Schedule = ({
    */
   useEffect(() => {
     (async () => {
-      const newEventsOnDays = JSON.parse(localStorage.getItem('eventsOnDays'));
-      const newTasksOnDays = JSON.parse(localStorage.getItem('tasksOnDays'));
+      const newEventsOnDays = JSON.parse(
+        localStorage.getItem('eventsOnDays') ?? ''
+      );
+      const newTasksOnDays = JSON.parse(
+        localStorage.getItem('tasksOnDays') ?? ''
+      );
       if (newEventsOnDays) {
         setEventsOnDays(newEventsOnDays);
       } else {
@@ -103,7 +121,7 @@ const Schedule = ({
    */
   useEffect(() => {
     if (tasksOnDays.length == 0) return;
-    setTasksOnDays((prevTasks) =>
+    setTasksOnDays((prevTasks: string[][]) =>
       days.map((_day, i) =>
         prevTasks[i].filter(
           (event) =>
@@ -184,7 +202,7 @@ const Schedule = ({
               <div key={i}>
                 <div className='p-[10px] bg-gray-200 mb-[10px] rounded-lg'>
                   <span className='font-bold text-[24px]'>{day}</span>
-                  {scheduled[i].map((event, j) =>
+                  {scheduled[i].map((event: EventOrTask, j: number) =>
                     Object.keys(event).includes('days') ||
                     !Object.keys(event).includes('id') ? (
                       <ScheduledEvent event={event} key={j} container={true} />

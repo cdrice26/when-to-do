@@ -42,7 +42,7 @@ test('returns weather data for valid coordinates and times', async () => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ latitude: coords[0], longitude: coords[1] })
+    body: JSON.stringify({ longitude: coords[0], latitude: coords[1] })
   });
 });
 
@@ -78,7 +78,7 @@ test('returns 0 if API response contains error', async () => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ latitude: coords[0], longitude: coords[1] })
+    body: JSON.stringify({ longitude: coords[0], latitude: coords[1] })
   });
 });
 
@@ -107,6 +107,6 @@ test('returns empty array if no data is within the specified times', async () =>
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ latitude: coords[0], longitude: coords[1] })
+    body: JSON.stringify({ longitude: coords[0], latitude: coords[1] })
   });
 });

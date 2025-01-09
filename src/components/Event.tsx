@@ -1,7 +1,22 @@
-import DaySelector from './general/DaySelector';
-import TimePicker from './general/TimePicker';
-import Button from './general/Button';
+import DaySelector from './general/DaySelector.tsx';
+import TimePicker from './general/TimePicker.tsx';
+import Button from './general/Button.tsx';
 import React from 'react';
+import { Value } from 'react-time-picker/dist/cjs/shared/types';
+
+interface EventProps {
+  name: string;
+  days: boolean[];
+  startTime: Date;
+  endTime: Date;
+  location: string;
+  onDayChange: (index: number) => void;
+  onNameChange: (name: string) => void;
+  onStartChange: (time: Date) => void;
+  onEndChange: (time: Date) => void;
+  onLocationChange: (location: string) => void;
+  onDestroy: () => void;
+}
 
 /**
  * One event on the availablility screen, with controls for editing and deleting
@@ -19,7 +34,7 @@ const Event = ({
   onEndChange,
   onLocationChange,
   onDestroy
-}) => {
+}: EventProps) => {
   return (
     <div className='bg-gray-200 rounded-lg my-[10px] pt-[10px] flex-shrink h-[250px] text-center'>
       <div className={styles.timePickers}>
@@ -28,7 +43,9 @@ const Event = ({
           className={styles.textInput}
           value={name}
           placeholder='New Event'
-          onInput={(e) => onNameChange(e.target.value)}
+          onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onNameChange(e.target.value)
+          }
         />
       </div>
       <DaySelector daysSelected={days} onChange={onDayChange} />
@@ -36,15 +53,29 @@ const Event = ({
         <TimePicker
           label='Start: '
           value={startTime ?? new Date(0, 0, 0, 0, 0)}
-          onChange={(selectedTime) =>
-            onStartChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+          onChange={(selectedTime: Value) =>
+            onStartChange(
+              new Date(
+                0,
+                0,
+                0,
+                ...(selectedTime?.split(':').map(Number) ?? [0, 0])
+              )
+            )
           }
         />
         <TimePicker
           label='End: '
           value={endTime ?? new Date(0, 0, 0, 23, 59)}
-          onChange={(selectedTime) =>
-            onEndChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+          onChange={(selectedTime: Value) =>
+            onEndChange(
+              new Date(
+                0,
+                0,
+                0,
+                ...(selectedTime?.split(':').map(Number) ?? [23, 59])
+              )
+            )
           }
         />
       </div>
@@ -54,7 +85,9 @@ const Event = ({
           className={styles.textInput}
           value={location}
           placeholder='Somewhere'
-          onInput={(e) => onLocationChange(e.target.value)}
+          onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+            onLocationChange(e.target.value)
+          }
         />
       </div>
       <div className='flex justify-center items-center w-full p-2'>

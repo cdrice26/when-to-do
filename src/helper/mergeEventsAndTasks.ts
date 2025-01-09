@@ -69,7 +69,10 @@ const mergeEventsAndTasks = async (
         lastEventOrTask?.endTime,
         drivingTimeTo
       );
-      const taskEndTime: Date = addMinutes(taskStartTime, tasksMutable[j].time);
+      const taskEndTime: Date = addMinutes(
+        taskStartTime,
+        tasksMutable[j]?.time
+      );
       const nextEventStartTime = mergedEventsWithDefaults[i + 1].startTime;
 
       // Check if the task fits within the available time slot and weather conditions
@@ -79,17 +82,16 @@ const mergeEventsAndTasks = async (
         tasksMutable[j]?.location || defaultLocation,
         buildDateList(taskStartTime, taskEndTime, dayOfWeekIndex, thisWeek)
       );
-
       const isWeatherSuitable =
-        !tasksMutable[j].outside ||
+        !tasksMutable[j]?.outside ||
         weatherConditions.every(
           (hour: { precip: number }) => hour.precip <= rainThreshold
         );
 
       if (canFit && isWeatherSuitable) {
         schedule.push({
-          id: tasksMutable[j].id,
-          name: tasksMutable[j].name,
+          id: tasksMutable[j]?.id,
+          name: tasksMutable[j]?.name,
           location: tasksMutable[j]?.location,
           startTime: taskStartTime,
           endTime: taskEndTime
@@ -97,7 +99,7 @@ const mergeEventsAndTasks = async (
 
         lastEventOrTask = schedule[schedule.length - 1];
         tasksMutable = tasksMutable.filter(
-          (task) => task.id !== tasksMutable[j].id
+          (task) => task?.id !== tasksMutable[j]?.id
         );
         j--; // Adjust index after removal
       }
@@ -106,10 +108,11 @@ const mergeEventsAndTasks = async (
 
   // Add remaining tasks that couldn't be scheduled
   for (const task of tasksMutable) {
+    if (!task?.id) continue;
     schedule.push({
-      id: task.id,
-      name: task.name,
-      location: task.location,
+      id: task?.id,
+      name: task?.name,
+      location: task?.location,
       startTime: null,
       endTime: null
     });

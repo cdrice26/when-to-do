@@ -3,7 +3,7 @@
 import { createContext } from 'react';
 import usePersistentState from '../hooks/usePersistentState.ts';
 import randId from '../helper/UUID.ts';
-import { Event, Task } from '../types/instances';
+import { Event, Task, Settings } from '../types/instances';
 
 export const EventsContext = createContext<
   [Event[], React.Dispatch<React.SetStateAction<Event[]>>]
@@ -37,7 +37,18 @@ export const TasksContext = createContext<
   () => {}
 ]);
 
-export const SettingsContext = createContext({});
+export const SettingsContext = createContext<
+  [Settings, React.Dispatch<React.SetStateAction<Settings>>]
+>([
+  {
+    dayStart: new Date(0, 0, 0, 7, 0),
+    dayEnd: new Date(0, 0, 0, 22, 0),
+    defaultLocation: '',
+    thisWeek: true,
+    rainThreshold: 0.5
+  },
+  () => {}
+]);
 
 /**
  * Default list of events
@@ -75,8 +86,8 @@ interface ProviderProps {
  * Default settings
  */
 const defaultSettings = {
-  dayStart: null,
-  dayEnd: null,
+  dayStart: new Date(0, 0, 0, 7, 0),
+  dayEnd: new Date(0, 0, 0, 22, 0),
   defaultLocation: '',
   thisWeek: true,
   rainThreshold: 0.5

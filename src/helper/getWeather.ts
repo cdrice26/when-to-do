@@ -15,10 +15,13 @@ const getWeather = async (location: string, times: Date[]) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ latitude: coords[0], longitude: coords[1] })
+    body: JSON.stringify({ longitude: coords[0], latitude: coords[1] })
   });
   const json = await resp.json();
-  if (Object.keys(json).includes('error')) return 0;
+  if (Object.keys(json).includes('error')) {
+    console.log(json);
+    return 0;
+  }
   const p = json.hourly.time
     .map((time: string, index: number) => ({
       time: new Date(time),

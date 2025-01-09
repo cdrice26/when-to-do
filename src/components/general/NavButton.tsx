@@ -1,5 +1,10 @@
 import Link from 'next/link';
-import PropTypes from 'prop-types';
+
+interface NavButtonProps {
+  text: string;
+  page: string;
+  icon: React.ReactNode;
+}
 
 /**
  * Renders a button that acts as a navigation link.
@@ -10,7 +15,7 @@ import PropTypes from 'prop-types';
  * @param {ReactNode} param0.icon - The icon to display on the button.
  * @returns {JSX.Element} The rendered NavButton component.
  */
-export default function NavButton({ text, page, icon }) {
+export default function NavButton({ text, page, icon }: NavButtonProps) {
   return (
     <Link href={page} passHref>
       <button
@@ -25,9 +30,3 @@ export default function NavButton({ text, page, icon }) {
     </Link>
   );
 }
-
-NavButton.propTypes = {
-  text: PropTypes.string.isRequired,
-  page: PropTypes.string.isRequired,
-  icon: PropTypes.node.isRequired
-};

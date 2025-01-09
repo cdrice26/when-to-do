@@ -1,15 +1,21 @@
 import { SettingsContext } from '../../constants/context.tsx';
 import { useContext } from 'react';
-import DaySelector from '../general/DaySelector';
+import DaySelector from '../general/DaySelector.tsx';
+import { Task } from '@/types/instances.ts';
+
+interface UnscheduledTaskProps {
+  task: Task;
+  scheduleOnDay: (dayIndex: number, taskId: string) => void;
+}
 
 /**
  * One task in the unscheduled tasks list
- * @param {Object} props - Includes a task property with an object containing all
+ * @param {UnscheduledTaskProps} props - Includes a task property with an object containing all
  *                         the information necessary to display the task, as well as a
  *                         scheduleOnDay function which will be called when the user clicks
  *                         on the day selector
  */
-const UnscheduledTask = ({ task, scheduleOnDay }) => {
+const UnscheduledTask = ({ task, scheduleOnDay }: UnscheduledTaskProps) => {
   const [settings, _setSettings] = useContext(SettingsContext);
 
   return (

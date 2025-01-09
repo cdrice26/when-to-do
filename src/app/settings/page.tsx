@@ -1,6 +1,6 @@
 'use client';
 
-import TimePicker from '../../components/general/TimePicker';
+import TimePicker from '../../components/general/TimePicker.tsx';
 import { useContext } from 'react';
 import { SettingsContext } from '../../constants/context.tsx';
 
@@ -15,17 +15,17 @@ const SettingsScreen = () => {
 
   /**
    * Updates the default location in the settings context
-   * @param {Object} newLoc - Object with lat and long properties
+   * @param {string} newLoc - New default location
    */
-  const onLocationChange = (newLoc) => {
+  const onLocationChange = (newLoc: string) => {
     setSettings({ ...settings, defaultLocation: newLoc });
   };
 
   /**
    * Updates the wake-up time in the settings context
-   * @param {number} newStart - New wake-up time in minutes since midnight
+   * @param {Date} newStart - New wake-up time
    */
-  const onStartChange = (newStart) => {
+  const onStartChange = (newStart: Date) => {
     setSettings((oldSettings) => ({
       ...oldSettings,
       dayStart: newStart < oldSettings.dayEnd ? newStart : oldSettings.dayEnd
@@ -34,9 +34,9 @@ const SettingsScreen = () => {
 
   /**
    * Updates the bedtime in the settings context
-   * @param {number} newEnd - New bedtime in minutes since midnight
+   * @param {Date} newEnd - New bedtime
    */
-  const onEndChange = (newEnd) => {
+  const onEndChange = (newEnd: Date) => {
     setSettings((oldSettings) => ({
       ...oldSettings,
       dayEnd: newEnd > oldSettings.dayStart ? newEnd : oldSettings.dayStart
@@ -56,11 +56,11 @@ const SettingsScreen = () => {
 
   /**
    * Updates the rain threshold in the settings context.
-   * @param {string|number} newThreshold - The new rain threshold.
+   * @param {string} newThreshold - The new rain threshold.
    *   If a string, it is converted to a number. If a number, it is normalized to be between 0 and 1.
    *   If NaN or an empty string, the threshold is set to 0.5.
    */
-  const onThresholdChange = (newThreshold) => {
+  const onThresholdChange = (newThreshold: string) => {
     setSettings((oldSettings) => ({
       ...oldSettings,
       rainThreshold:
@@ -80,7 +80,9 @@ const SettingsScreen = () => {
           <input
             className={styles.textInput}
             value={settings.defaultLocation}
-            onInput={(e) => onLocationChange(e.target.value)}
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onLocationChange(e.target.value)
+            }
           />
         </div>
         <div className={styles.timePickers}>
@@ -88,7 +90,14 @@ const SettingsScreen = () => {
           <TimePicker
             value={settings.dayStart ?? new Date(0, 0, 0, 0, 0)}
             onChange={(selectedTime) =>
-              onStartChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+              onStartChange(
+                new Date(
+                  0,
+                  0,
+                  0,
+                  ...(selectedTime?.split(':').map(Number) ?? [0, 0])
+                )
+              )
             }
           />
         </div>
@@ -97,7 +106,14 @@ const SettingsScreen = () => {
           <TimePicker
             value={settings.dayEnd ?? new Date(0, 0, 0, 23, 59)}
             onChange={(selectedTime) =>
-              onEndChange(new Date(0, 0, 0, ...selectedTime.split(':')))
+              onEndChange(
+                new Date(
+                  0,
+                  0,
+                  0,
+                  ...(selectedTime?.split(':').map(Number) ?? [23, 59])
+                )
+              )
             }
           />
         </div>
@@ -106,7 +122,7 @@ const SettingsScreen = () => {
           <input
             type='checkbox'
             onChange={onWeekChange}
-            value={settings.thisWeek}
+            checked={settings.thisWeek}
           />
         </div>
         <div className={styles.timePickers}>
@@ -121,7 +137,9 @@ const SettingsScreen = () => {
                 ? ''
                 : Math.round(settings.rainThreshold * 100).toString()
             }
-            onInput={(e) => onThresholdChange(e.target.value)}
+            onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onThresholdChange(e.target.value)
+            }
             type='number'
           />
           <span> %</span>

@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
  * @param {Request} request - The incoming request object.
  * @return {Promise<NextResponse>} The response object.
  */
-export async function POST(request) {
+export async function POST(request: Request) {
   const body = await request.json();
   const coord1 = body.coord1;
   const coord2 = body.coord2;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import Task from '../../components/Task';
+import Task from '../../components/Task.tsx';
 import { TasksContext } from '../../constants/context.tsx';
 import {
   addToState,
@@ -9,7 +9,7 @@ import {
   editElementInState
 } from '../../helper/stateMutation.ts';
 import randId from '../../helper/UUID.ts';
-import AddButton from '../../components/general/AddButton';
+import AddButton from '../../components/general/AddButton.tsx';
 import useHydration from '../../hooks/useHydration.ts';
 
 /**

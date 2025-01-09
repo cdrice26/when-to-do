@@ -1,10 +1,15 @@
 const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
+interface DaySelectorProps {
+  daysSelected: boolean[];
+  onChange: (dayIndex: number) => void;
+}
+
 /**
  * Component for a day selector, with each day in a circle that can be selected (and deselected)
- * @param {Object} props - Object with onChange function and list of selected days
+ * @param {DaySelectorProps} props - Object with onChange function and list of selected days
  */
-const DaySelector = ({ daysSelected, onChange }) => {
+const DaySelector = ({ daysSelected, onChange }: DaySelectorProps) => {
   return (
     <div className='flex flex-row justify-center'>
       {days.map((day, i) => (

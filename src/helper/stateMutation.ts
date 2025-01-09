@@ -34,14 +34,14 @@ export const removeFromState = <T>(
  * @param {(value: T[]) => void} setter - Reference to state setter
  * @param {Number} index - Index of item to edit
  * @param {string} parameter - Key of item to edit in the object
- * @param {T} value - Value to update the parameter to
+ * @param {U} value - Value to update the parameter to
  */
-export const editElementInState = <T>(
+export const editElementInState = <T, U>(
   state: T[],
   setter: (value: T[]) => void,
   index: number,
   parameter: string,
-  value: T
+  value: U
 ) => {
   setter([
     ...state.slice(0, index),

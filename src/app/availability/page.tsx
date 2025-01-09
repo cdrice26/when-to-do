@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import Event from '../../components/Event';
+import Event from '../../components/Event.tsx';
 import { EventsContext } from '../../constants/context.tsx';
 import {
   addToState,
@@ -9,7 +9,7 @@ import {
   editElementInState
 } from '../../helper/stateMutation.ts';
 import randId from '../../helper/UUID.ts';
-import AddButton from '../../components/general/AddButton';
+import AddButton from '../../components/general/AddButton.tsx';
 import useHydration from '../../hooks/useHydration.ts';
 
 /**
@@ -44,7 +44,7 @@ const AvailabilityScreen = () => {
    *
    * @param {number} eventIndex - The index of the event to remove
    */
-  const deleteEvent = (eventIndex) => {
+  const deleteEvent = (eventIndex: number) => {
     removeFromState(events, setEvents, eventIndex);
   };
 
@@ -53,9 +53,9 @@ const AvailabilityScreen = () => {
    *
    * @param {number} eventIndex - The index of the event to edit
    * @param {string} parameter - The parameter to edit within the event
-   * @param {any} value - The new value to set for the parameter
+   * @param {T} value - The new value to set for the parameter
    */
-  const editEvent = (eventIndex, parameter, value) => {
+  const editEvent = <T,>(eventIndex: number, parameter: string, value: T) => {
     editElementInState(events, setEvents, eventIndex, parameter, value);
   };
 
@@ -65,7 +65,7 @@ const AvailabilityScreen = () => {
    * @param {number} eventIndex - The index of the event to edit
    * @param {number} dayIndex - The index of the day to toggle
    */
-  const toggleDay = (eventIndex, dayIndex) => {
+  const toggleDay = (eventIndex: number, dayIndex: number) => {
     editElementInState(events, setEvents, eventIndex, 'days', [
       ...events[eventIndex].days.slice(0, dayIndex),
       !events[eventIndex].days[dayIndex],

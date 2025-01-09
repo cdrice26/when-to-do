@@ -1,7 +1,7 @@
 'use client';
 
-import UnscheduledTaskList from '../../components/schedule/UnscheduledTaskList';
-import Schedule from '../../components/schedule/Schedule';
+import UnscheduledTaskList from '../../components/schedule/UnscheduledTaskList.tsx';
+import Schedule from '../../components/schedule/Schedule.tsx';
 import { TasksContext } from '../../constants/context.tsx';
 import { useState, useContext } from 'react';
 import useHydration from '../../hooks/useHydration.ts';
@@ -25,7 +25,7 @@ const ScheduleScreen = () => {
    * List of tasks on each day.
    * Each entry is an array of task ids.
    */
-  const [tasksOnDays, setTasksOnDays] = useState([]);
+  const [tasksOnDays, setTasksOnDays] = useState<string[][]>([]);
 
   const hydrated = useHydration();
 
@@ -39,7 +39,7 @@ const ScheduleScreen = () => {
    * @param {number} dayIndex - The index of the day in the schedule array.
    * @param {string} taskId - The ID of the task to be scheduled.
    */
-  const scheduleOnDay = (dayIndex, taskId) => {
+  const scheduleOnDay = (dayIndex: number, taskId: string) => {
     setTasksOnDays((prevTasksOnDays) => [
       ...prevTasksOnDays.slice(0, dayIndex),
       [...prevTasksOnDays[dayIndex], taskId],

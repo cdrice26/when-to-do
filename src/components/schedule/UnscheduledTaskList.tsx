@@ -1,12 +1,16 @@
-import UnscheduledTask from './UnscheduledTask';
+import UnscheduledTask from './UnscheduledTask.tsx';
 import { TasksContext } from '../../constants/context.tsx';
 import { useContext } from 'react';
 
+interface UnscheduledTaskListProps {
+  scheduleOnDay: (dayIndex: number, taskId: string) => void;
+}
+
 /**
  * List of unscheduled tasks
- * @param {Object} props - Contains a style object for defining the style of the list
+ * @param {UnscheduledTaskListProps} props - Object with scheduleOnDay function
  */
-const UnscheduledTaskList = ({ style, scheduleOnDay }) => {
+const UnscheduledTaskList = ({ scheduleOnDay }: UnscheduledTaskListProps) => {
   const [tasks, _setTasks] = useContext(TasksContext);
 
   return (
