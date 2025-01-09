@@ -2,15 +2,15 @@
 
 import { useContext } from 'react';
 import Task from '../../components/Task';
-import { TasksContext } from '../../constants/context';
+import { TasksContext } from '../../constants/context.tsx';
 import {
   addToState,
   removeFromState,
   editElementInState
-} from '../../helper/stateMutation';
-import randId from '../../helper/UUID';
+} from '../../helper/stateMutation.ts';
+import randId from '../../helper/UUID.ts';
 import AddButton from '../../components/general/AddButton';
-import useHydration from '../../hooks/useHydration';
+import useHydration from '../../hooks/useHydration.ts';
 
 /**
  * Overall component for displaying the task editing screen

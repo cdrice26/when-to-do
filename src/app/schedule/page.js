@@ -2,9 +2,9 @@
 
 import UnscheduledTaskList from '../../components/schedule/UnscheduledTaskList';
 import Schedule from '../../components/schedule/Schedule';
-import { TasksContext } from '@/constants/context';
+import { TasksContext } from '../../constants/context.tsx';
 import { useState, useContext } from 'react';
-import useHydration from '../../hooks/useHydration';
+import useHydration from '../../hooks/useHydration.ts';
 
 /**
  * Overall component to display the scheduling screen

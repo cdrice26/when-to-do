@@ -1,11 +1,12 @@
 // __tests__/drivingTime.test.js
 import getDrivingTime from '../src/helper/drivingTime';
 import getCoords from '../src/helper/getCoords';
+import { MockFetch, MockGetCoords } from '../src/types/testingTypes';
 
 jest.mock('../src/helper/getCoords', () => jest.fn());
 
 beforeEach(() => {
-  fetch.resetMocks();
+  (fetch as MockFetch).resetMocks();
   localStorage.clear();
   jest.clearAllMocks();
 });
@@ -28,7 +29,7 @@ test('returns cached driving time if available and valid', async () => {
   );
 
   // Provide specific mock implementations for getCoords
-  getCoords
+  (getCoords as MockGetCoords)
     .mockResolvedValueOnce([12.34, 56.78]) // For location1
     .mockResolvedValueOnce([98.76, 54.32]); // For location2
 
@@ -48,8 +49,10 @@ test('fetches driving time from API and caches it if not cached', async () => {
   const coord2 = [98.76, 54.32];
   const drivingTime = 3600; // 1 hour in seconds
 
-  getCoords.mockResolvedValueOnce(coord1).mockResolvedValueOnce(coord2);
-  fetch.mockResponseOnce(
+  (getCoords as MockGetCoords)
+    .mockResolvedValueOnce(coord1)
+    .mockResolvedValueOnce(coord2);
+  (fetch as MockFetch).mockResponseOnce(
     JSON.stringify({
       features: [{ properties: { summary: { duration: drivingTime } } }]
     })
@@ -68,7 +71,7 @@ test('fetches driving time from API and caches it if not cached', async () => {
   });
 
   const cachedData = JSON.parse(
-    localStorage.getItem(`drivingTime-${location1}-${location2}`)
+    localStorage.getItem(`drivingTime-${location1}-${location2}`) ?? '{}'
   );
   expect(cachedData.drivingTime).toEqual(drivingTime / 60);
 });
@@ -77,7 +80,7 @@ test('returns 0 if coordinates are not found', async () => {
   const location1 = 'start';
   const location2 = 'end';
 
-  getCoords
+  (getCoords as MockGetCoords)
     .mockResolvedValueOnce(undefined)
     .mockResolvedValueOnce([98.76, 54.32]);
 
@@ -94,8 +97,10 @@ test('returns 0 if API response is invalid', async () => {
   const coord1 = [12.34, 56.78];
   const coord2 = [98.76, 54.32];
 
-  getCoords.mockResolvedValueOnce(coord1).mockResolvedValueOnce(coord2);
-  fetch.mockResponseOnce(JSON.stringify({}));
+  (getCoords as MockGetCoords)
+    .mockResolvedValueOnce(coord1)
+    .mockResolvedValueOnce(coord2);
+  (fetch as MockFetch).mockResponseOnce(JSON.stringify({}));
 
   const result = await getDrivingTime(location1, location2);
 
@@ -110,8 +115,11 @@ test('handles API errors gracefully', async () => {
   const coord1 = [12.34, 56.78];
   const coord2 = [98.76, 54.32];
 
-  getCoords.mockResolvedValueOnce(coord1).mockResolvedValueOnce(coord2);
-  fetch.mockReject(() => Promise.reject('API is down'));
+  (getCoords as MockGetCoords)
+    .mockResolvedValueOnce(coord1)
+    .mockResolvedValueOnce(coord2);
+  // @ts-ignore
+  (fetch as MockFetch).mockReject(() => Promise.reject('API is down'));
 
   await expect(getDrivingTime(location1, location2)).resolves.toEqual(0);
 

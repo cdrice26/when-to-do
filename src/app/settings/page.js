@@ -2,7 +2,7 @@
 
 import TimePicker from '../../components/general/TimePicker';
 import { useContext } from 'react';
-import { SettingsContext } from '../../constants/context';
+import { SettingsContext } from '../../constants/context.tsx';
 
 /**
  * Overall component to display the settings screen

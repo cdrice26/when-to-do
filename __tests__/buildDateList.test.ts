@@ -10,7 +10,7 @@ test('builds date list correctly for the current week', () => {
   const day = 0; // Sunday
   const isThisWeek = true;
 
-  const lastSunday = getLastSunday(Date.now());
+  const lastSunday = getLastSunday(new Date());
   const dayOfInterest = addDays(lastSunday, day);
 
   const expected = [
@@ -41,7 +41,7 @@ test('builds date list correctly for the next week', () => {
   const day = 0; // Sunday
   const isThisWeek = false;
 
-  const lastSunday = getLastSunday(Date.now());
+  const lastSunday = getLastSunday(new Date());
   const nextSunday = addDays(lastSunday, 7);
   const dayOfInterest = addDays(nextSunday, day);
 

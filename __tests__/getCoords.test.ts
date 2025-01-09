@@ -1,8 +1,9 @@
 // __tests__/getCoords.test.js
 import getCoords from '../src/helper/getCoords';
+import { MockFetch } from '../src/types/testingTypes';
 
 beforeEach(() => {
-  fetch.resetMocks();
+  (fetch as MockFetch).resetMocks();
   localStorage.clear();
 });
 
@@ -29,7 +30,7 @@ test('fetches coordinates from API and caches the result', async () => {
     features: [{ geometry: { coordinates } }]
   };
 
-  fetch.mockResponseOnce(JSON.stringify(apiResponse));
+  (fetch as MockFetch).mockResponseOnce(JSON.stringify(apiResponse));
 
   const result = await getCoords(location);
 
@@ -52,7 +53,7 @@ test('returns undefined if no coordinates found', async () => {
     features: []
   };
 
-  fetch.mockResponseOnce(JSON.stringify(apiResponse));
+  (fetch as MockFetch).mockResponseOnce(JSON.stringify(apiResponse));
 
   const result = await getCoords(location);
 
@@ -69,7 +70,8 @@ test('returns undefined if no coordinates found', async () => {
 test('handles API errors gracefully', async () => {
   const location = 'test-location';
 
-  fetch.mockReject(() => Promise.reject('API is down'));
+  // @ts-ignore
+  (fetch as MockFetch).mockReject(() => Promise.reject('API is down'));
 
   await expect(getCoords(location)).rejects.toThrow('API is down');
   expect(localStorage.getItem(`locations/${location}`)).toBeNull();

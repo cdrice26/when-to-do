@@ -6,7 +6,10 @@ import getCoords from './getCoords';
  * @param {String} location2 - Search query for ending location
  * @returns {Number} - The driving time from location1 to location2 in minutes
  */
-const getDrivingTime = async (location1, location2) => {
+const getDrivingTime = async (
+  location1: string,
+  location2: string
+): Promise<number> => {
   // For testing only
   // return fakeGetDrivingTime(location1, location2);
 
@@ -26,7 +29,7 @@ const getDrivingTime = async (location1, location2) => {
         const cached = JSON.parse(cachedRaw);
         const timestamp = new Date(cached.timestamp);
 
-        if (Date.now() - timestamp < 1000 * 60 * 60)
+        if (Date.now() - timestamp.getTime() < 1000 * 60 * 60)
           // 1 hour
           return cached.drivingTime;
       }
@@ -74,7 +77,7 @@ const getDrivingTime = async (location1, location2) => {
 };
 
 // For testing only - fake getDrivingTime API
-const fakeGetDrivingTime = async (location1, location2) => {
+const fakeGetDrivingTime = async (location1: string, location2: string) => {
   const cacheKey = `drivingTime-${location1}-${location2}`;
   const cachedRaw = localStorage.getItem(cacheKey);
   console.log('Cache Key:', cacheKey);

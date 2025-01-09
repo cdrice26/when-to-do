@@ -7,7 +7,7 @@ module.exports = {
       {
         jsc: {
           parser: {
-            syntax: 'ecmascript', // or 'typescript' for .ts/.tsx files
+            syntax: 'typescript', // Change from 'ecmascript' to 'typescript'
             importMeta: true
           },
           transform: {
@@ -15,10 +15,11 @@ module.exports = {
           }
         },
         module: {
-          type: 'es6' // Use 'es6' for ES Modules
+          type: 'es6'
         }
       }
     ]
   },
-  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/']
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+  testMatch: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[tj]s?(x)']
 };

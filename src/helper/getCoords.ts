@@ -1,4 +1,4 @@
-const getCoords = async (location) => {
+const getCoords = async (location: string) => {
   // Attempt to get the cached results from localStorage, if they exist
   const cachedRaw = localStorage.getItem(`locations/${location}`);
   const isCached = cachedRaw !== null && cachedRaw !== undefined;
@@ -21,7 +21,7 @@ const getCoords = async (location) => {
       throw new Error('API is down');
     }
 
-    const json = isCached ? JSON.parse(cachedRaw) : await resp1.json();
+    const json = isCached ? JSON.parse(cachedRaw) : await resp1?.json();
     if (!isCached) {
       localStorage.setItem(`locations/${location}`, JSON.stringify(json));
     }

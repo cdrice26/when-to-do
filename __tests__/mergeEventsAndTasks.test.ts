@@ -1,9 +1,11 @@
-import mergeEventsAndTasks from '../src/helper/mergeEventsAndTasks';
-import getDrivingTime from '../src/helper/drivingTime';
-import getWeather from '../src/helper/getWeather';
+import mergeEventsAndTasks from '../src/helper/mergeEventsAndTasks.ts';
+import getDrivingTime from '../src/helper/drivingTime.ts';
+import getWeather from '../src/helper/getWeather.ts';
+import { MockGetDrivingTime, MockGetWeather } from '@/types/testingTypes.ts';
+import { Event, Task } from '../src/types/instances.ts';
 
-jest.mock('../src/helper/drivingTime');
-jest.mock('../src/helper/getWeather');
+jest.mock('../src/helper/drivingTime.ts');
+jest.mock('../src/helper/getWeather.ts');
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -23,10 +25,10 @@ test('merges events and schedules tasks correctly', async () => {
       endTime: new Date(2024, 7, 26, 14, 0),
       name: 'Event 2'
     }
-  ];
+  ] as Event[];
   const tasks = [
-    { id: 1, name: 'Task 1', location: 'C', time: 60, outside: true },
-    { id: 2, name: 'Task 2', location: 'D', time: 90, outside: true }
+    { id: '1', name: 'Task 1', location: 'C', time: 60, outside: true },
+    { id: '2', name: 'Task 2', location: 'D', time: 90, outside: true }
   ];
   const settings = {
     dayStart: new Date(2024, 7, 26, 8, 0),
@@ -38,29 +40,33 @@ test('merges events and schedules tasks correctly', async () => {
   const dayOfWeekIndex = 0;
 
   // Mock implementations
-  getDrivingTime.mockImplementation((startLocation, endLocation) => {
-    if (startLocation === 'A' && endLocation === 'C')
-      return Promise.resolve(15);
-    if (startLocation === 'C' && endLocation === 'B')
-      return Promise.resolve(20);
-    return Promise.resolve(10); // Default driving time
-  });
+  (getDrivingTime as MockGetDrivingTime).mockImplementation(
+    (startLocation: string, endLocation: string) => {
+      if (startLocation === 'A' && endLocation === 'C')
+        return Promise.resolve(15);
+      if (startLocation === 'C' && endLocation === 'B')
+        return Promise.resolve(20);
+      return Promise.resolve(10); // Default driving time
+    }
+  );
 
-  getWeather.mockImplementation((location, times) => {
-    if (location === 'C')
+  (getWeather as MockGetWeather).mockImplementation(
+    (location: string, times: Date[]) => {
+      if (location === 'C')
+        return Promise.resolve([
+          { time: times[0], precip: 0.1 },
+          { time: times[1], precip: 0.3 }
+        ]);
       return Promise.resolve([
         { time: times[0], precip: 0.1 },
-        { time: times[1], precip: 0.3 }
+        { time: times[1], precip: 0.1 }
       ]);
-    return Promise.resolve([
-      { time: times[0], precip: 0.1 },
-      { time: times[1], precip: 0.1 }
-    ]);
-  });
+    }
+  );
 
   const result = await mergeEventsAndTasks(
     events,
-    tasks,
+    tasks as Task[],
     settings,
     dayOfWeekIndex
   );
@@ -73,7 +79,7 @@ test('merges events and schedules tasks correctly', async () => {
       name: 'Event 1'
     },
     {
-      id: 2,
+      id: '2',
       name: 'Task 2',
       location: 'D',
       startTime: new Date(2024, 7, 26, 10, 10),
@@ -86,7 +92,7 @@ test('merges events and schedules tasks correctly', async () => {
       name: 'Event 2'
     },
     {
-      id: 1,
+      id: '1',
       name: 'Task 1',
       location: 'C',
       startTime: null,
@@ -98,14 +104,16 @@ test('merges events and schedules tasks correctly', async () => {
 test('handles tasks that cannot be scheduled due to rain', async () => {
   const events = [
     {
+      id: '0',
       location: 'A',
       startTime: new Date(2024, 7, 26, 8, 0),
       endTime: new Date(2024, 7, 26, 10, 0),
-      name: 'Event 1'
+      name: 'Event 1',
+      days: [false, false, false, false, false, false, false]
     }
   ];
   const tasks = [
-    { id: 1, name: 'Task 1', location: 'C', time: 60, outside: true }
+    { id: '1', name: 'Task 1', location: 'C', time: 60, outside: true }
   ];
   const settings = {
     dayStart: new Date(2024, 7, 26, 0, 0),
@@ -116,25 +124,27 @@ test('handles tasks that cannot be scheduled due to rain', async () => {
   };
   const dayOfWeekIndex = 0;
 
-  getDrivingTime.mockResolvedValue(15);
-  getWeather.mockResolvedValue([
+  (getDrivingTime as MockGetDrivingTime).mockResolvedValue(15);
+  (getWeather as MockGetWeather).mockResolvedValue([
     { time: new Date(2024, 7, 26, 10, 15), precip: 0.3 }
   ]);
 
   const result = await mergeEventsAndTasks(
     events,
-    tasks,
+    tasks as Task[],
     settings,
     dayOfWeekIndex
   );
 
   expect(result).toEqual([
     {
+      id: '0',
       location: 'A',
       startTime: new Date(2024, 7, 26, 8, 0),
       endTime: new Date(2024, 7, 26, 10, 0),
-      name: 'Event 1'
+      name: 'Event 1',
+      days: [false, false, false, false, false, false, false]
     },
-    { id: 1, name: 'Task 1', location: 'C', startTime: null, endTime: null }
+    { id: '1', name: 'Task 1', location: 'C', startTime: null, endTime: null }
   ]);
 });

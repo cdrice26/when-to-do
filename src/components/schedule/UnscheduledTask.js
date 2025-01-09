@@ -1,4 +1,4 @@
-import { SettingsContext } from '../../constants/context';
+import { SettingsContext } from '../../constants/context.tsx';
 import { useContext } from 'react';
 import DaySelector from '../general/DaySelector';
 

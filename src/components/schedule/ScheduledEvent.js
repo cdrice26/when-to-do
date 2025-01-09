@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { SettingsContext } from '../../constants/context';
+import { SettingsContext } from '../../constants/context.tsx';
 
 /**
  * One event on the schedule screen

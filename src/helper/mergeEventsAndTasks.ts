@@ -1,13 +1,7 @@
 import { addMinutes, addDays } from 'date-fns';
-import getDrivingTime from './drivingTime';
-import getWeather from './getWeather';
-
-/*
-NOTE: I did use ChatGPT to help me debug these functions in particular. They are not concerned with React
-and are just computational, and I did not copy and paste any AI-generated code into this file.
-I retuyped all AI-generated code, made sure I understood how it worked, and also significantly refactored it
-to better fit the needs of the project. Unless otherwise noted, all other files are written by me.
-*/
+import getDrivingTime from './drivingTime.ts';
+import getWeather from './getWeather.ts';
+import { Event, Task, Settings, EventOrTask } from '../types/instances.ts';
 
 /**
  * Sorts the events by start time and schedules tasks at the earliest possible time.
@@ -18,10 +12,10 @@ to better fit the needs of the project. Unless otherwise noted, all other files 
  * @returns {Array} - Array of merged events and scheduled tasks.
  */
 const mergeEventsAndTasks = async (
-  events,
-  tasks,
-  { dayStart, dayEnd, defaultLocation, thisWeek, rainThreshold },
-  dayOfWeekIndex
+  events: Event[],
+  tasks: Task[],
+  { dayStart, dayEnd, defaultLocation, thisWeek, rainThreshold }: Settings,
+  dayOfWeekIndex: number
 ) => {
   // Initialize schedule array
   let schedule = [];
@@ -46,12 +40,14 @@ const mergeEventsAndTasks = async (
   ];
 
   // Merge overlapping events
-  const mergedEventsWithDefaults = mergeOverlappingEvents(eventsWithDefaults);
+  const mergedEventsWithDefaults = mergeOverlappingEvents(
+    eventsWithDefaults as Event[]
+  );
 
   // Iterate over merged events and tasks
   let tasksMutable = tasks;
   for (let i = 0; i < mergedEventsWithDefaults.length - 1; i++) {
-    let lastEventOrTask = mergedEventsWithDefaults[i];
+    let lastEventOrTask: EventOrTask = mergedEventsWithDefaults[i];
 
     if (i > 0 || lastEventOrTask.endTime !== dayStart) {
       schedule.push(lastEventOrTask);
@@ -69,8 +65,11 @@ const mergeEventsAndTasks = async (
       );
 
       // Calculate potential task start and end times
-      const taskStartTime = addMinutes(lastEventOrTask.endTime, drivingTimeTo);
-      const taskEndTime = addMinutes(taskStartTime, tasksMutable[j].time);
+      const taskStartTime: Date = addMinutes(
+        lastEventOrTask?.endTime,
+        drivingTimeTo
+      );
+      const taskEndTime: Date = addMinutes(taskStartTime, tasksMutable[j].time);
       const nextEventStartTime = mergedEventsWithDefaults[i + 1].startTime;
 
       // Check if the task fits within the available time slot and weather conditions
@@ -83,7 +82,9 @@ const mergeEventsAndTasks = async (
 
       const isWeatherSuitable =
         !tasksMutable[j].outside ||
-        weatherConditions.every((hour) => hour.precip <= rainThreshold);
+        weatherConditions.every(
+          (hour: { precip: number }) => hour.precip <= rainThreshold
+        );
 
       if (canFit && isWeatherSuitable) {
         schedule.push({
@@ -122,15 +123,17 @@ const mergeEventsAndTasks = async (
  * @param {Array} events - Array of events to sort and merge
  * @returns {Array} - Array of merged events
  */
-export const mergeOverlappingEvents = (events) => {
+export const mergeOverlappingEvents = (events: Event[]) => {
   // Sort events by start time
-  events.sort((first, second) => first.startTime - second.startTime);
+  events.sort(
+    (first, second) => first.startTime?.getTime() - second.startTime?.getTime()
+  );
   events = events.filter((event) => event !== undefined);
 
   if (events.length === 0) return [];
 
   // Merge events that overlap
-  let mergedEvents = [events[0]];
+  let mergedEvents: Event[] = [events[0]];
   for (let i = 1; i < events.length; i++) {
     // Current event we are working on
     let currentEvent = events[i];
@@ -149,13 +152,19 @@ export const mergeOverlappingEvents = (events) => {
           ' and ' +
           (currentEvent.name === '' ? 'Unnamed event' : currentEvent.name),
         startTime: new Date(
-          Math.min(lastMergedEvent.startTime, currentEvent.startTime)
+          Math.min(
+            lastMergedEvent.startTime?.getTime(),
+            currentEvent.startTime?.getTime()
+          )
         ),
         endTime: new Date(
-          Math.max(lastMergedEvent.endTime, currentEvent.endTime)
+          Math.max(
+            lastMergedEvent.endTime?.getTime(),
+            currentEvent.endTime?.getTime()
+          )
         ),
         location: lastMergedEvent.location || currentEvent.location
-      };
+      } as Event;
 
       // Remove the event that was last added, then replace it with the merged one
       mergedEvents.pop();
@@ -177,10 +186,15 @@ export const mergeOverlappingEvents = (events) => {
  * @param {Boolean} isThisWeek - Whether of not we are dealing with this week (otherwise next week)
  * @returns {Array} - List of dates corresponding to each hour
  */
-export const buildDateList = (startTime, endTime, day, isThisWeek) => {
+export const buildDateList = (
+  startTime: Date,
+  endTime: Date,
+  day: number,
+  isThisWeek: boolean
+) => {
   const startHr = startTime.getHours();
   const endHr = endTime.getHours();
-  const lastSunday = getLastSunday(Date.now());
+  const lastSunday = getLastSunday(new Date());
   const dayOfInterest = isThisWeek
     ? addDays(lastSunday, day)
     : addDays(addDays(lastSunday, day), 7);
@@ -202,7 +216,7 @@ export const buildDateList = (startTime, endTime, day, isThisWeek) => {
  * @param {Date} d - The date of which to get the last Sunday
  * @returns {Date} - The date of the last Sunday before {d}
  */
-export const getLastSunday = (d) => {
+export const getLastSunday = (d: Date) => {
   const t = new Date(d);
   t.setDate(t.getDate() - t.getDay());
   return t;

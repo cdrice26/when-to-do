@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 /**
  * A custom hook that provides persistent state using localStorage.
@@ -7,7 +7,10 @@ import { useEffect, useState } from 'react';
  * @param {T} initialValue - The initial value of the state.
  * @returns {[T, Dispatch<SetStateAction<T>>]} - An array containing the current state value and a function to update the state value.
  */
-const usePersistentState = (key, initialValue) => {
+const usePersistentState = <T>(
+  key: string,
+  initialValue: T
+): [T, Dispatch<SetStateAction<T>>] => {
   const [value, setValue] = useState(() => {
     if (typeof window !== 'undefined') {
       const storedValue = localStorage.getItem(key);
@@ -32,9 +35,10 @@ const usePersistentState = (key, initialValue) => {
 /**
  * A replacer function for JSON.stringify to convert Date objects to ISO strings.
  */
-const replaceDates = (key, value) => {
-  if (this && this[key] instanceof Date) {
-    return this[key].toISOString();
+const replaceDates = (key: string, value: any) => {
+  if (this === undefined) return value;
+  if (this && (this as any)[key] instanceof Date) {
+    return (this as any)[key].toISOString();
   }
   return value;
 };
@@ -42,7 +46,7 @@ const replaceDates = (key, value) => {
 /**
  * A reviver function for JSON.parse to convert ISO strings back to Date objects.
  */
-const reviveDates = (value) => {
+const reviveDates = (value: any) => {
   if (value && typeof value === 'object') {
     for (const key in value) {
       if (Object.prototype.hasOwnProperty.call(value, key)) {
@@ -60,7 +64,7 @@ const reviveDates = (value) => {
 /**
  * Checks if a string is an ISO date string.
  */
-const isISODate = (str) => {
+const isISODate = (str: string) => {
   const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
   return regex.test(str);
 };

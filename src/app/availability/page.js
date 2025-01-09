@@ -2,15 +2,15 @@
 
 import { useContext } from 'react';
 import Event from '../../components/Event';
-import { EventsContext } from '../../constants/context';
+import { EventsContext } from '../../constants/context.tsx';
 import {
   addToState,
   removeFromState,
   editElementInState
-} from '../../helper/stateMutation';
-import randId from '../../helper/UUID';
+} from '../../helper/stateMutation.ts';
+import randId from '../../helper/UUID.ts';
 import AddButton from '../../components/general/AddButton';
-import useHydration from '../../hooks/useHydration';
+import useHydration from '../../hooks/useHydration.ts';
 
 /**
  * Component for availability screen (where you create events)

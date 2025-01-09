@@ -2,8 +2,9 @@ import { Inter } from 'next/font/google';
 import NavButton from '../components/general/NavButton';
 import { CiCalendar, CiClock2, CiHome, CiSettings } from 'react-icons/ci';
 import { LiaTasksSolid } from 'react-icons/lia';
-import { ContextProvider } from '../constants/context';
+import { ContextProvider } from '../constants/context.tsx';
 import './globals.css';
+import { JSX } from 'react';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,6 +13,10 @@ export const metadata = {
   description: 'Simple task scheduler'
 };
 
+interface RootLayoutProps {
+  children: React.ReactNode;
+}
+
 /**
  * Root layout component.
  *
@@ -19,7 +24,7 @@ export const metadata = {
  * @param {React.ReactNode} props.children - The child components.
  * @return {JSX.Element} The root layout component.
  */
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
     <html lang='en'>
       <body

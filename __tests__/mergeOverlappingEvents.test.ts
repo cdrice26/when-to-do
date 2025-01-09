@@ -79,9 +79,9 @@ test('handles non-overlapping events correctly', () => {
 });
 
 test('returns empty array if no events are provided', () => {
-  const events = [];
+  const events: any = [];
 
-  const expected = [];
+  const expected: any = [];
 
   const result = mergeOverlappingEvents(events);
 

@@ -1,12 +1,43 @@
 'use client';
 
 import { createContext } from 'react';
-import usePersistentState from '../hooks/usePersistentState';
-import randId from '../helper/UUID';
+import usePersistentState from '../hooks/usePersistentState.ts';
+import randId from '../helper/UUID.ts';
+import { Event, Task } from '../types/instances';
 
-export const EventsContext = createContext();
-export const TasksContext = createContext();
-export const SettingsContext = createContext();
+export const EventsContext = createContext<
+  [Event[], React.Dispatch<React.SetStateAction<Event[]>>]
+>([
+  [
+    {
+      name: '',
+      days: [false, false, false, false, false, false, false],
+      startTime: new Date(),
+      endTime: new Date(),
+      location: '',
+      id: randId()
+    }
+  ],
+  () => {}
+]);
+
+export const TasksContext = createContext<
+  [Task[], React.Dispatch<React.SetStateAction<Task[]>>]
+>([
+  [
+    {
+      name: '',
+      location: '',
+      time: 0,
+      scheduled: false,
+      outside: false,
+      id: randId()
+    }
+  ],
+  () => {}
+]);
+
+export const SettingsContext = createContext({});
 
 /**
  * Default list of events
@@ -15,8 +46,8 @@ const defaultEvent = [
   {
     name: '',
     days: [false, false, false, false, false, false, false],
-    startTime: null,
-    endTime: null,
+    startTime: new Date(),
+    endTime: new Date(),
     location: '',
     id: randId()
   }
@@ -36,6 +67,10 @@ const defaultTask = [
   }
 ];
 
+interface ProviderProps {
+  children: React.ReactNode;
+}
+
 /**
  * Default settings
  */
@@ -52,7 +87,7 @@ const defaultSettings = {
  * @param {*} param0 - {children}
  * @returns JSX for the provider
  */
-const EventsProvider = ({ children }) => {
+const EventsProvider = ({ children }: ProviderProps) => {
   const [events, setEvents] = usePersistentState('events', defaultEvent);
   return (
     <EventsContext.Provider value={[events, setEvents]}>
@@ -66,7 +101,7 @@ const EventsProvider = ({ children }) => {
  * @param {*} param0 - {children}
  * @returns JSX for the provider
  */
-const TasksProvider = ({ children }) => {
+const TasksProvider = ({ children }: ProviderProps) => {
   const [tasks, setTasks] = usePersistentState('tasks', defaultTask);
   return (
     <TasksContext.Provider value={[tasks, setTasks]}>
@@ -80,7 +115,7 @@ const TasksProvider = ({ children }) => {
  * @param {*} param0 - {children}
  * @returns JSX for the provider
  */
-const SettingsProvider = ({ children }) => {
+const SettingsProvider = ({ children }: ProviderProps) => {
   const [settings, setSettings] = usePersistentState(
     'settings',
     defaultSettings
@@ -97,7 +132,7 @@ const SettingsProvider = ({ children }) => {
  * @param {*} param0 - {children}
  * @returns JSX for the provider
  */
-export const ContextProvider = ({ children }) => {
+export const ContextProvider = ({ children }: ProviderProps) => {
   return (
     <EventsProvider>
       <TasksProvider>

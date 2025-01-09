@@ -1,5 +1,6 @@
 import getWeather from '../src/helper/getWeather';
 import getCoords from '../src/helper/getCoords';
+import { MockFetch, MockGetCoords } from '../src/types/testingTypes';
 
 // Mock getCoords and fetch
 jest.mock('../src/helper/getCoords');
@@ -24,8 +25,8 @@ test('returns weather data for valid coordinates and times', async () => {
     }
   };
 
-  getCoords.mockResolvedValue(coords);
-  fetch.mockResolvedValue({
+  (getCoords as MockGetCoords).mockResolvedValue(coords);
+  (fetch as MockFetch).mockResolvedValue({
     json: () => Promise.resolve(weatherResponse)
   });
 
@@ -49,7 +50,7 @@ test('returns 0 if coordinates are not found', async () => {
   const location = 'invalidLocation';
   const times = [new Date('2024-07-26T00:00:00Z')];
 
-  getCoords.mockResolvedValue(undefined);
+  (getCoords as MockGetCoords).mockResolvedValue(undefined);
 
   const result = await getWeather(location, times);
 
@@ -63,8 +64,8 @@ test('returns 0 if API response contains error', async () => {
   const times = [new Date('2024-07-26T00:00:00Z')];
   const coords = [12.34, 56.78];
 
-  getCoords.mockResolvedValue(coords);
-  fetch.mockResolvedValue({
+  (getCoords as MockGetCoords).mockResolvedValue(coords);
+  (fetch as MockFetch).mockResolvedValue({
     json: () => Promise.resolve({ error: 'API error' })
   });
 
@@ -92,8 +93,8 @@ test('returns empty array if no data is within the specified times', async () =>
     }
   };
 
-  getCoords.mockResolvedValue(coords);
-  fetch.mockResolvedValue({
+  (getCoords as MockGetCoords).mockResolvedValue(coords);
+  (fetch as MockFetch).mockResolvedValue({
     json: () => Promise.resolve(weatherResponse)
   });
 

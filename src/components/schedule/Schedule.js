@@ -5,8 +5,8 @@ import {
   SettingsContext,
   TasksContext,
   EventsContext
-} from '../../constants/context';
-import mergeEventsAndTasks from '../../helper/mergeEventsAndTasks';
+} from '../../constants/context.tsx';
+import mergeEventsAndTasks from '../../helper/mergeEventsAndTasks.ts';
 
 const days = [
   'Sunday',
