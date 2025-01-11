@@ -43,17 +43,17 @@ const TasksScreen = () => {
    * Delete a task from the state array
    * @param {Number} taskIndex - The index of the task to remove
    */
-  const deleteTask = (taskIndex) => {
+  const deleteTask = (taskIndex: number) => {
     removeFromState(tasks, setTasks, taskIndex);
   };
 
   /**
    * Edit a task in the state array
    * @param {Number} taskIndex - The index of the task to edit
-   * @param {*} parameter - The key to edit the value of
+   * @param {String} parameter - The key to edit the value of
    * @param {*} value - The value to update the value to
    */
-  const editTask = (taskIndex, parameter, value) => {
+  const editTask = <T,>(taskIndex: number, parameter: string, value: T) => {
     editElementInState(tasks, setTasks, taskIndex, parameter, value);
   };
 

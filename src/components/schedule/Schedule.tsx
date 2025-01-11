@@ -95,20 +95,26 @@ const Schedule = ({
    */
   useEffect(() => {
     (async () => {
-      const newEventsOnDays = JSON.parse(
-        localStorage.getItem('eventsOnDays') ?? ''
-      );
-      const newTasksOnDays = JSON.parse(
-        localStorage.getItem('tasksOnDays') ?? ''
-      );
-      if (newEventsOnDays) {
-        setEventsOnDays(newEventsOnDays);
-      } else {
+      try {
+        const newEventsOnDays = JSON.parse(
+          localStorage.getItem('eventsOnDays') ?? ''
+        );
+        const newTasksOnDays = JSON.parse(
+          localStorage.getItem('tasksOnDays') ?? ''
+        );
+        if (newEventsOnDays) {
+          setEventsOnDays(newEventsOnDays);
+        } else {
+          setEventsOnDays(new Array(days.length).fill([]));
+        }
+        if (newTasksOnDays) {
+          setTasksOnDays(newTasksOnDays);
+        } else {
+          setTasksOnDays(new Array(days.length).fill([]));
+        }
+      } catch (error) {
+        console.log(error);
         setEventsOnDays(new Array(days.length).fill([]));
-      }
-      if (newTasksOnDays) {
-        setTasksOnDays(newTasksOnDays);
-      } else {
         setTasksOnDays(new Array(days.length).fill([]));
       }
     })();
