@@ -10,7 +10,8 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'WhenToDo',
-  description: 'Simple task scheduler'
+  description:
+    'A simple task scheduler that takes driving time and weather into account'
 };
 
 interface RootLayoutProps {
@@ -38,7 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
             <aside
               className='w-full sm:w-[100px] sm:shadow-md flex flex-row space-x-4 sm:space-x-0 sm:space-y-4
                             justify-center sm:justify-start sm:flex-col p-2 bg-blue-500 sm:bg-white
-                            sticky sm:relative bottom-0 z-[49]'
+                            sticky sm:relative bottom-0 z-[49] pb-6 sm:pb-0'
             >
               <NavButton
                 icon={
