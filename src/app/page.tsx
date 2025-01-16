@@ -9,7 +9,9 @@ const Home: React.FC = () => {
         screen and start assigning your tasks to days, and we&apos;ll do the
         scheduling!
       </p>
-      <a href='/acknowledgements'>Acknowledgements</a>
+      <a href='/acknowledgements' className='text-blue-500 underline'>
+        Acknowledgements
+      </a>
     </>
   );
 };
