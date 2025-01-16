@@ -1,7 +1,12 @@
 import { Inter } from 'next/font/google';
 import NavButton from '../components/general/NavButton.tsx';
-import { CiCalendar, CiClock2, CiHome, CiSettings } from 'react-icons/ci';
-import { LiaTasksSolid } from 'react-icons/lia';
+import { IoSettingsOutline } from 'react-icons/io5';
+import {
+  LiaTasksSolid,
+  LiaHomeSolid,
+  LiaClockSolid,
+  LiaCalendar
+} from 'react-icons/lia';
 import { ContextProvider } from '../constants/context.tsx';
 import './globals.css';
 import { JSX } from 'react';
@@ -43,14 +48,17 @@ export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
             >
               <NavButton
                 icon={
-                  <CiHome size={35} className='text-white sm:text-current' />
+                  <LiaHomeSolid
+                    size={35}
+                    className='text-white sm:text-current'
+                  />
                 }
                 text='Home'
                 page='/'
               />
               <NavButton
                 icon={
-                  <CiCalendar
+                  <LiaCalendar
                     size={35}
                     className='text-white sm:text-current'
                   />
@@ -70,14 +78,17 @@ export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
               />
               <NavButton
                 icon={
-                  <CiClock2 size={35} className='text-white sm:text-current' />
+                  <LiaClockSolid
+                    size={35}
+                    className='text-white sm:text-current'
+                  />
                 }
                 text='Schedule'
                 page='/schedule'
               />
               <NavButton
                 icon={
-                  <CiSettings
+                  <IoSettingsOutline
                     size={35}
                     className='text-white sm:text-current'
                   />
