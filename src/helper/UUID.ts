@@ -1,11 +1,11 @@
-import uuid from 'uuid-js';
+import { v4 as uuidv4 } from 'uuid';
 
-// UUID Documentation Source: https://www.npmjs.com/package/uuid-js
+// UUID Documentation Source: https://www.npmjs.com/package/uuid
 
 /**
- * Generate a random id
- * @returns A random id
+ * Generate a random UUID
+ * @returns A random UUID string
  */
-const randId = () => uuid.create().toString();
+const randId = () => uuidv4();
 
 export default randId;
