@@ -17,6 +17,11 @@ const Acknowledgements: React.FC = () => {
           GitHub
         </a>
         .<br />
+        WhenToDo uses weather data from{' '}
+        <a href='https://open-meteo.com'>Open-Meteo</a> and uses the{' '}
+        <a href='https://openrouteservice.org'>OpenRouteService</a> for
+        caluclating driving time.
+        <br />
         WhenToDo uses the following libraries. The licenses for each are
         included below:
         <ul className='list-disc'>
