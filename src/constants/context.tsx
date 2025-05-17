@@ -12,10 +12,10 @@ export const EventsContext = createContext<
     {
       name: '',
       days: [false, false, false, false, false, false, false],
-      startTime: new Date(),
-      endTime: new Date(),
+      startTime: new Date(0, 0, 0, 0, 0), // fixed value for hydration
+      endTime: new Date(0, 0, 0, 0, 0),   // fixed value for hydration
       location: '',
-      id: randId()
+      id: 'default-event-id' // fixed value for hydration
     }
   ],
   () => {}
@@ -31,7 +31,7 @@ export const TasksContext = createContext<
       time: 0,
       scheduled: false,
       outside: false,
-      id: randId()
+      id: 'default-task-id' // fixed value for hydration
     }
   ],
   () => {}
@@ -41,8 +41,8 @@ export const SettingsContext = createContext<
   [Settings, React.Dispatch<React.SetStateAction<Settings>>]
 >([
   {
-    dayStart: new Date(0, 0, 0, 7, 0),
-    dayEnd: new Date(0, 0, 0, 22, 0),
+    dayStart: new Date(0, 0, 0, 7, 0), // fixed value for hydration
+    dayEnd: new Date(0, 0, 0, 22, 0),  // fixed value for hydration
     defaultLocation: '',
     thisWeek: true,
     rainThreshold: 0.5
@@ -57,10 +57,10 @@ const defaultEvent = [
   {
     name: '',
     days: [false, false, false, false, false, false, false],
-    startTime: new Date(),
-    endTime: new Date(),
+    startTime: new Date(0, 0, 0, 0, 0), // fixed value for hydration
+    endTime: new Date(0, 0, 0, 0, 0),   // fixed value for hydration
     location: '',
-    id: randId()
+    id: 'default-event-id' // fixed value for hydration
   }
 ];
 
@@ -74,7 +74,7 @@ const defaultTask = [
     time: 0,
     scheduled: false,
     outside: false,
-    id: randId()
+    id: 'default-task-id' // fixed value for hydration
   }
 ];
 
@@ -86,8 +86,8 @@ interface ProviderProps {
  * Default settings
  */
 const defaultSettings = {
-  dayStart: new Date(0, 0, 0, 7, 0),
-  dayEnd: new Date(0, 0, 0, 22, 0),
+  dayStart: new Date(0, 0, 0, 7, 0), // fixed value for hydration
+  dayEnd: new Date(0, 0, 0, 22, 0),  // fixed value for hydration
   defaultLocation: '',
   thisWeek: true,
   rainThreshold: 0.5

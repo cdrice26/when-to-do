@@ -15,8 +15,8 @@ const DaySelector = ({ daysSelected, onChange }: DaySelectorProps) => {
       {days.map((day, i) => (
         <button
           key={i}
-          className={`m-[10px] rounded-full flex-1 h-[30px] w-[30px] items-center justify-center bg-${
-            daysSelected[i] ? 'blue-500' : 'gray-300'
+          className={`m-[10px] rounded-full flex-1 h-[30px] w-[30px] items-center justify-center ${
+            daysSelected[i] ? 'bg-blue-500' : 'bg-gray-300'
           }`}
           onClick={() => onChange(i)}
         >
