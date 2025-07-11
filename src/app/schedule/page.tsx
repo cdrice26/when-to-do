@@ -4,7 +4,6 @@ import UnscheduledTaskList from '../../components/schedule/UnscheduledTaskList.t
 import Schedule from '../../components/schedule/Schedule.tsx';
 import { TasksContext } from '../../constants/context.tsx';
 import { useState, useContext } from 'react';
-import useHydration from '../../hooks/useHydration.ts';
 
 /**
  * Overall component to display the scheduling screen
@@ -26,12 +25,6 @@ const ScheduleScreen = () => {
    * Each entry is an array of task ids.
    */
   const [tasksOnDays, setTasksOnDays] = useState<string[][]>([]);
-
-  const hydrated = useHydration();
-
-  if (!hydrated) {
-    return null; // Render a placeholder or nothing during SSR
-  }
 
   /**
    * Schedule a task on a specific day.

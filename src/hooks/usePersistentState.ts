@@ -11,23 +11,33 @@ const usePersistentState = <T>(
   key: string,
   initialValue: T
 ): [T, Dispatch<SetStateAction<T>>] => {
-  const [value, setValue] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const storedValue = localStorage.getItem(key);
-      if (storedValue !== 'null' && storedValue !== null) {
-        const parsedValue = JSON.parse(storedValue);
-        return reviveDates(parsedValue);
-      }
-    }
-    return initialValue;
-  });
+  // Always start with the initial value (matches SSR)
+  const [value, setValueRaw] = useState<T>(initialValue);
+  const [hydrated, setHydrated] = useState(false);
 
+  // After mount, load from localStorage if available
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const valueToStore = JSON.stringify(value, replaceDates);
-      localStorage.setItem(key, valueToStore);
+      const storedValue = localStorage.getItem(key);
+      if (storedValue !== null && storedValue !== 'null') {
+        setValueRaw(reviveDates(JSON.parse(storedValue)));
+      }
+      setHydrated(true);
     }
-  }, [key, value]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key]);
+
+  // Only save to localStorage after hydration (prevents overwriting)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && hydrated) {
+      localStorage.setItem(key, JSON.stringify(value, replaceDates));
+    }
+  }, [key, value, hydrated]);
+
+  // Wrap setValue to ensure only T is accepted
+  const setValue: Dispatch<SetStateAction<T>> = (newValue) => {
+    setValueRaw(newValue);
+  };
 
   return [value, setValue];
 };
