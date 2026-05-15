@@ -1,5 +1,7 @@
 # WhenToDo
 
+> WARNING: WhenToDo is no longer maintained and its deployment is no longer active. Its usage was very limited due to not integrating with modern task/calendar apps and so focus is shifting toward other projects.
+
 WhenToDo is a simple task scheduler that helps you plan your week. It is built with Next.js and TailwindCSS. Enter your sleep schedule and events for the week, and then enter your tasks for the week and WhenToDo will schedule them for you. It'll even account for driving time and do its best to keep you from ending up outside in the rain. 
 
 ## Getting Started
